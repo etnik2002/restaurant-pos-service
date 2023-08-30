@@ -31,7 +31,7 @@ module.exports = {
 
     getFloorTables: async (req,res) => {
         try {
-            const tables = await Table.aggregate([{ $match: { restaurant_id: req.params.restaurant_id, floor: req.params.floor_id } }])
+            const tables = await Table.find( { restaurant_id: req.params.restaurant_id, floor: req.params.floor_id } )
             return res.status(200).json(tables);
         } catch (error) {
             console.log(error);

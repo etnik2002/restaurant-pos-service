@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { createTable, getTableById, takeTable, leaveTable, payTable } = require("../controllers/table-controller");
 
 
-router.post('/create', createTable);
+router.post('/create/:restaurant_id/:floor', createTable);
 
 router.get('/:id', getTableById);
 

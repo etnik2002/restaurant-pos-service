@@ -1,3 +1,4 @@
+const mongoose  = require("mongoose");
 const Category = require("../models/Category");
 const Extras = require("../models/Extras");
 const Floor = require("../models/Floor");
@@ -93,7 +94,7 @@ module.exports = {
 
     getRestaurantFloor: async (req,res) => {
         try {
-            const floors = await Floor.find({ restaurant_id: req.params.restaurant_id });
+            const floors = await Floor.find({ restaurant_id: new mongoose.Types.ObjectId(req.params.restaurant_id) });
             return res.status(200).json(floors);      
         } catch (error) {
             console.log(error);
