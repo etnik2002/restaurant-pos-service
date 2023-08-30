@@ -10,13 +10,13 @@ module.exports = {
 
     createRestaurant: async (req,res) => {
         try {
-            const salt = bcrypt.genSaltSync(10);
-            const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-
+            // const salt = bcrypt.genSaltSync(10);
+            // const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+            console.log(req.body)
             const newRestaurant = new Restaurant({
                 name: req.body.name,
                 email: req.body.email,
-                password: hashedPassword,
+                password: req.body.password,
             })
 
             await newRestaurant.save();

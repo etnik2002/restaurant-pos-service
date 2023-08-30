@@ -7,7 +7,7 @@ module.exports = {
         try {
             const newOrder = new Order({
                 price: req.body.price,
-                extras: req.body.extras,
+                extras: req.body.extras || null,
                 products: req.body.products,
                 waiter: req.body.waiter,
                 table: req.body.table,

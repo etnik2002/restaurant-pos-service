@@ -23,6 +23,15 @@ if (cluster.isMaster) {
   const MongoStore = require('connect-mongo');
   require("dotenv").config();
 
+  const categoryRoutes = require("./routes/category");
+  const extrasRoutes = require("./routes/extras");
+  const floorRoutes = require("./routes/floor");
+  const orderRoutes = require("./routes/order");
+  const productRoutes = require("./routes/product");
+  const restaurantRoutes = require("./routes/restaurant");
+  const tableRoutes = require("./routes/table");
+  const userRoutes = require("./routes/table");
+  const waiterRoutes = require("./routes/table");
   var cookieParser = require('cookie-parser');
 
   app.use(function (req, res, next) {
@@ -33,39 +42,17 @@ if (cluster.isMaster) {
     next();
   });
 
-  const categoryRoutes = require("./routes/category");
-  const extrasRoutes = require("./routes/extras");
-  const floorRoutes = require("./routes/floor");
-  const orderRoutes = require("./routes/order");
-  const productRoutes = require("./routes/product");
-  const restaurantRoutes = require("./routes/restaurant");
-  const tableRoutes = require("./routes/table");
-  const userRoutes = require("./routes/table");
-  const waiterRoutes = require("./routes/table");
 
 
-  app.use('/category', categoryRoutes);
-  app.use('/extras', extrasRoutes);
-  app.use('/floor', floorRoutes);
-  app.use('/order', orderRoutes);
-  app.use('/product', productRoutes);
-  app.use('/restaurant', restaurantRoutes);
-  app.use('/table', tableRoutes);
-  app.use('/user', userRoutes);
-  app.use('/waiter', waiterRoutes);
 
-  app.use(
-    express.urlencoded({
-      extended: true,
-    })
-  );
 
+  app.use(bodyParser.urlencoded({ extended: true }));
    
   app.use(express.json());
   app.use(bodyParser.json());
   app.use(cors());
   app.use(cookieParser(process.env.OUR_SECRET));
-  
+
   // app.use(cors({
   //   origin: ['http://localhost:4462', 'https://admin-hakbus.vercel.app']
   // }))
@@ -94,6 +81,16 @@ if (cluster.isMaster) {
   app.get('/', (req,res) => {
       res.json({message: "POS API"})
   })
+
+  app.use('/category', categoryRoutes);
+  app.use('/extras', extrasRoutes);
+  app.use('/floor', floorRoutes);
+  app.use('/order', orderRoutes);
+  app.use('/product', productRoutes);
+  app.use('/restaurant', restaurantRoutes);
+  app.use('/table', tableRoutes);
+  app.use('/user', userRoutes);
+  app.use('/waiter', waiterRoutes);
 
 
   const PORT = process.env.PORT || 4444;
