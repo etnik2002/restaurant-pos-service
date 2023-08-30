@@ -5,6 +5,7 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Restaurant = require("../models/Restaurant");
 const bcrypt= require('bcrypt');
+const jwt = require("jsonwebtoken")
 
 module.exports = {
 
@@ -34,7 +35,7 @@ module.exports = {
               return res.status(401).json({ message: "Invalid Email " });
             }
       
-            const validPassword = req.body.password === driver.password;
+            const validPassword = req.body.password === restaurant.password;
       
             if (!validPassword) {
               return res.status(401).json({ data: null, message: "Invalid  Password" });

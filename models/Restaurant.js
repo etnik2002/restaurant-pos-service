@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken")
 
 const restaurantSchema = mongoose.Schema({
     name: { type: String, required: true },
