@@ -1,4 +1,5 @@
 const Order = require("../models/Order");
+const Restaurant = require("../models/Restaurant");
 const Waiter = require("../models/Waiter");
 
 module.exports = {
@@ -26,7 +27,7 @@ module.exports = {
                 return res.status(404).json("This waiter was not found!");
             }
 
-            const validPin = req.body.pin === waiter.pin;
+            const validPin = req.body.pin == waiter.pin;
             if(!validPin) {
                 return res.status(401).json({ data: null, message: "Invalid  PIN" });
             }

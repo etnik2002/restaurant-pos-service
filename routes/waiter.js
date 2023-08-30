@@ -2,9 +2,9 @@ const router = require("express").Router();
 const { createWaiter, login, getWaiterById, getWaiterOrders } = require("../controllers/waiter-controller");
 
 
-router.post('/create', createWaiter);
+router.post('/create/:restaurant_id', createWaiter);
 
-router.post('/login', login);
+router.post('/login/:restaurant_id', login);
 
 router.get('/:restaurant_id/:id', getWaiterById);
 

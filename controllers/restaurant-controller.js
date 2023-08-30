@@ -93,7 +93,7 @@ module.exports = {
 
     getRestaurantFloor: async (req,res) => {
         try {
-            const floors = await Floor.aggregate([{ $match: { restaurant_id: req.params.restaurant_id } }]);
+            const floors = await Floor.find({ restaurant_id: req.params.restaurant_id });
             return res.status(200).json(floors);      
         } catch (error) {
             console.log(error);

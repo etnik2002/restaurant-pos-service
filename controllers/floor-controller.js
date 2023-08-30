@@ -1,5 +1,6 @@
 const Floor = require("../models/Floor");
 const Table = require("../models/Table");
+const mongoose = require("mongoose");
 
 module.exports = {
 
@@ -7,13 +8,23 @@ module.exports = {
         try {
             const newFloor = new Floor({
                 name: req.body.name,
-                restaurant_id: req.params.restaurant_id,
+                restaurant_id: new mongoose.Types.ObjectId(req.params.restaurant_id),
             })
 
             await newFloor.save();
             return res.status(201).json("Floor created");
         } catch (error) {
             console.log(error);
+            return res.status(500).json(`error -> ${error}`);    
+        }
+    },
+
+    getAllFloors: async (req,res) => {
+        try {
+            const all  = await Floor.aggregate([{ $match: {} }]);
+            return res.status(200).json(all)
+        } catch (error) {
+            console.log(error)
             return res.status(500).json(`error -> ${error}`);    
         }
     },

@@ -31,7 +31,7 @@ if (cluster.isMaster) {
   const restaurantRoutes = require("./routes/restaurant");
   const tableRoutes = require("./routes/table");
   const userRoutes = require("./routes/table");
-  const waiterRoutes = require("./routes/table");
+  const waiterRoutes = require("./routes/waiter");
   var cookieParser = require('cookie-parser');
 
   app.use(function (req, res, next) {
