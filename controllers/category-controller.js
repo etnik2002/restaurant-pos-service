@@ -8,7 +8,8 @@ module.exports = {
             const newCat = new Category({
                 name: req.body.name,
                 color: req.body.color,
-                restaurant_id: req.params.restaurant_id
+                restaurant_id: req.params.restaurant_id,
+                image: req.body.image,
             })
 
             await newCat.save(); 
