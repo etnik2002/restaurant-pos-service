@@ -5,8 +5,19 @@ module.exports = {
 
     createTable: async (req,res) => {
         try {
+            const tables = await Table.find({
+                restaurant_id: req.params.restaurant_id,
+                floor: req.params.floor
+              }).countDocuments().exec();
+              
+              console.log("Number of tables:", tables);
+              
+              const tableCode = `T${tables + 1}`;
+              
+              console.log("generated table code: ", tableCode);
+
             const newTable = new Table({
-                code: req.body.code,
+                code: tableCode,
                 capacity: req.body.capacity,
                 x: req.body.x,
                 y: req.body.y,
@@ -28,6 +39,16 @@ module.exports = {
             return res.status(200).json(table[0]);
         } catch (error) {
             console.log(error);
+            return res.status(500).json(`error -> ${error}`); 
+        }
+    },
+
+    moveTable: async (req,res) => {
+        try {
+            const movedTable = await Table.findByIdAndUpdate(req.params.table_id, { $set: { x: req.body.x, y: req.body.y } });
+            console.log({ newX: movedTable.x, newY: movedTable.y });
+            return res.status(200).json("Table moved successfully -> new coords: " + movedTable.x, movedTable.y)
+        } catch (error) {
             return res.status(500).json(`error -> ${error}`); 
         }
     },
@@ -63,6 +84,7 @@ module.exports = {
             return res.status(500).json(`error -> ${error}`); 
         }
     },
+
 
 
 }
