@@ -32,15 +32,22 @@ module.exports = {
 
     getCategoryProducts: async (req,res) => {
         try {
-            const catProducts = await Product.aggregate([
-                {
-                  $match: {
-                    category: req.params.id,
-                    restaurant_id: req.params.restaurant_id
-                  }
-                }
-              ]);
+            console.log(req.params)
+            // const catProducts = await Product.aggregate([
+            //     {
+            //       $match: {
+            //         category: req.params.id,
+            //         restaurant_id: req.params.restaurant_id
+            //       }
+            //     },
+                
+            //   ]).exec();
               
+            const catProducts = await Product.find({
+                category: req.params.id,
+                restaurant_id: req.params.restaurant_id
+            })
+            console.log(catProducts)
             return res.status(200).json(catProducts);
         } catch (error) {
             console.log(error);

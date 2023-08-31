@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { createExtras, deleteExtra, getRestaurantExtras } = require("../controllers/extras-controller");
 
 
-router.post('/create', createExtras);
+router.post('/create/:restaurant_id', createExtras);
 
 router.post('/:id', deleteExtra);
 

@@ -20,7 +20,7 @@ module.exports = {
 
     getRestaurantExtras: async (req,res) => {
         try {
-            const extras = await Extras.aggregate([{ $match: { _id: req.params.restaurant_id } }]);
+            const extras = await Extras.find( { restaurant_id: req.params.restaurant_id });
             return res.status(200).json(extras);
         } catch (error) {
             console.log(error);

@@ -6,8 +6,8 @@ const productSchema = mongoose.Schema({
     name: { type: String },
     price: { type: Number },
     tax: { type: Number },
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-    restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+    restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
 })
 
 
