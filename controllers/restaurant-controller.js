@@ -84,7 +84,7 @@ module.exports = {
 
     getRestaurantCategories : async (req,res) => {
         try {
-            const cats = await Category.aggregate([{ $match: { restaurant_id: req.params.restaurant_id } }]);
+            const cats = await Category.find( { restaurant_id: req.params.restaurant_id } );
             return res.status(200).json(cats);      
         } catch (error) {
             console.log(error);
