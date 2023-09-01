@@ -105,7 +105,10 @@ module.exports = {
     
     getRestaurantOrders : async (req,res) => {
         try {
-            const orders = await Order.aggregate([{ $match: { restaurant_id: req.params.restaurant_id } }]);
+            const orders = await Order.find({ restaurant_id: req.params.restaurant_id } )
+            .populate('waiter products table restaurant_id')
+            
+            console.log(orders)
             return res.status(200).json(orders);            
         } catch (error) {
             console.log(error);

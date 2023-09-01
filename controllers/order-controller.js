@@ -5,16 +5,24 @@ module.exports = {
 
     createOrder: async (req,res) => {
         try {
+            const cart = req.body.cart;
+            let products = [];
+            let price = 0;
+            cart.map((item) => {
+                products.push(item._id);
+                price += item.price;
+            })
+
             const newOrder = new Order({
-                price: req.body.price,
-                extras: req.body.extras || null,
-                products: req.body.products,
+                products: products,
                 waiter: req.body.waiter,
                 table: req.body.table,
-                restaurant_id: req.body.restaurant_id,
+                restaurant_id: req.params.restaurant_id,
+                price: price,
                 date: moment(new Date()).format('DD-MM-YYYY'),
                 time: moment(new Date()).format('hh:mm'),
             })
+
             await newOrder.save();
             return res.status(201).json("Order placed");
         } catch (error) {
