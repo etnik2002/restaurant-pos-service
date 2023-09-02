@@ -1,5 +1,6 @@
 const moment = require("moment");
 const Order = require("../models/Order");
+const Table = require("../models/Table");
 const Product = require("../models/Product");
 
 module.exports = {
@@ -26,8 +27,6 @@ module.exports = {
 
             await newOrder.save();
 
-            
-
             const productCounts = {};
             
             cart.forEach((product) => {
@@ -44,6 +43,8 @@ module.exports = {
               console.log(`Product ID: ${productId}, Count: ${productCounts[productId]}`);
                 await Product.findByIdAndUpdate(productId, { $inc: { sales: productCounts[productId] } });
             }
+
+            await Table.findByIdAndUpdate(req.params.table_id, { $set: { isTaken: true } });
          
             return res.status(201).json("Order placed");
         } catch (error) {
