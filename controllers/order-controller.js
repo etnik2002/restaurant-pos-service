@@ -1,5 +1,6 @@
 const moment = require("moment");
 const Order = require("../models/Order");
+const Product = require("../models/Product");
 
 module.exports = {
 
@@ -24,12 +25,33 @@ module.exports = {
             })
 
             await newOrder.save();
+
+            
+
+            const productCounts = {};
+            
+            cart.forEach((product) => {
+              const productId = product._id;
+              
+              if (!productCounts[productId]) {
+                productCounts[productId] = 1;
+              } else {
+                productCounts[productId]++;
+              }
+            });
+            
+            for (const productId in productCounts) {
+              console.log(`Product ID: ${productId}, Count: ${productCounts[productId]}`);
+                await Product.findByIdAndUpdate(productId, { $inc: { sales: productCounts[productId] } });
+            }
+         
             return res.status(201).json("Order placed");
         } catch (error) {
             console.log(error);
             return res.status(500).json(`error -> ${error}`); 
         }
     },
+
 
     getOrderById: async (req,res) => {
         try {

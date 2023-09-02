@@ -8,6 +8,16 @@ const Restaurant = require("../models/Restaurant");
 const bcrypt= require('bcrypt');
 const jwt = require("jsonwebtoken")
 
+function compare( a, b ) {
+    if ( a.sales < b.sales ){
+      return -1;
+    }
+    if ( a.sales > b.sales ){
+      return 1;
+    }
+    return 0;
+  }
+
 module.exports = {
 
     createRestaurant: async (req,res) => {
@@ -102,19 +112,47 @@ module.exports = {
         }
     },
 
-    
-    getRestaurantOrders : async (req,res) => {
+    mostOrderedDish: async (req,res) => {
         try {
-            const orders = await Order.find({ restaurant_id: req.params.restaurant_id } )
-            .populate('waiter products table restaurant_id')
-            
-            console.log(orders)
-            return res.status(200).json(orders);            
+            const products = await Product.find({ restaurant_id: req.params.restaurant_id });
+            const countProducts = []
+            products.map((p) => {
+                if(p.sales) {
+                    countProducts.push(p)
+                }
+            })
+            const sorted = countProducts.sort((a,b) => a.sales > b.sales)
+            return res.status(200).json(sorted)
         } catch (error) {
-            console.log(error);
+            console.log(error)
             return res.status(500).json(`error -> ${error}`); 
         }
     },
+    
+    getRestaurantOrders: async (req, res) => {
+        try {
+          const orders = await Order.find({ restaurant_id: req.params.restaurant_id })
+            .populate('waiter products restaurant_id')
+            .populate({
+              path: 'table',
+              populate: { path: 'floor' },
+            });
+      
+          const products = await Product.find({ restaurant_id: req.params.restaurant_id });
+      
+          const countProducts = products.filter((p) => p.sales);
+      
+          countProducts.sort((a, b) => b.sales - a.sales);
+      
+          const mostOrderedDish = countProducts.length > 0 ? countProducts[0] : null;
+
+          return res.status(200).json({ orders: orders, mostOrderedDish: mostOrderedDish });
+        } catch (error) {
+          console.log(error);
+          return res.status(500).json(`error -> ${error}`);
+        }
+      },
+      
 
     getRestaurantExtras : async (req,res) => {
         try {
