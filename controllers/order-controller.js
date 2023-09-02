@@ -25,7 +25,7 @@ module.exports = {
                 time: moment(new Date()).format('hh:mm'),
             })
 
-            await newOrder.save();
+            const createdOrder = await newOrder.save();
 
             const productCounts = {};
             
@@ -44,7 +44,7 @@ module.exports = {
                 await Product.findByIdAndUpdate(productId, { $inc: { sales: productCounts[productId] } });
             }
 
-            await Table.findByIdAndUpdate(req.params.table_id, { $set: { isTaken: true } });
+            await Table.findByIdAndUpdate(req.params.table_id, { $set: { isTaken: true, current_order: createdOrder._id } });
          
             return res.status(201).json("Order placed");
         } catch (error) {
@@ -56,15 +56,12 @@ module.exports = {
 
     getOrderById: async (req,res) => {
         try {
-            const order = await Order.aggregate([{ $match: { _id: req.params.id, restaurant_id: req.params.restaurant_id } }]);
-            return res.status(200).json(order[0]);            
+            // const order = await Order.aggregate([{ $match: { _id: req.params.id, restaurant_id: req.params.restaurant_id } }]);
+            const order = await Order.findById(req.params.id).populate('products waiter confirmed_by restaurant_id table')
+            return res.status(200).json(order);            
         } catch (error) {
             console.log(error);
             return res.status(500).json(`error -> ${error}`); 
         }
     },
-
-
-
-
 }

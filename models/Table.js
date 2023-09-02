@@ -7,6 +7,7 @@ const tabletSchema = mongoose.Schema({
     y: { type: Number, required: true },
     isPaid: { type: Boolean, default: false },
     isTaken: { type: Boolean, default: false },
+    current_order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', default: null },
     restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' },
     floor: { type: mongoose.Schema.Types.ObjectId, ref: 'Floor' },
 })
