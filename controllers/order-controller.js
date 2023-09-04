@@ -75,9 +75,9 @@ module.exports = {
         }
     },
 
-    prepareOrder: async (req,res) => {
+    readyOrder: async (req,res) => {
         try {
-            await Order.findByIdAndUpdate(req.params.id, { $set: { isPreparing: true } });
+            await Order.findByIdAndUpdate(req.params.id, { $set: { isReady: true } });
             return res.status(200).json("Order paid successfully");
         } catch (error) {
             console.log(error);
