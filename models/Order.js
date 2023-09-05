@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const orderSchema = mongoose.Schema({
     price: { type: Number },
     isPaid: { type: Boolean, default: false },
+    isReady: { type: Boolean, default: false },
     date: { type: String },
     time: { type: String },
     extras: [{ type: mongoose.Schema.Types.ObjectId, ref: "Extras" }],

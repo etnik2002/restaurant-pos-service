@@ -64,4 +64,25 @@ module.exports = {
             return res.status(500).json(`error -> ${error}`); 
         }
     },
+
+    payOrder: async (req,res) => {
+        try {
+            await Order.findByIdAndUpdate(req.params.id, { $set: { isPaid: true } });
+            return res.status(200).json("Order is preparing");
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(`error -> ${error}`); 
+        }
+    },
+
+    readyOrder: async (req,res) => {
+        try {
+            await Order.findByIdAndUpdate(req.params.id, { $set: { isReady: true } });
+            return res.status(200).json("Order paid successfully");
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(`error -> ${error}`); 
+        }
+    },
+
 }
