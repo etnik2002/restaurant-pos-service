@@ -26,6 +26,7 @@ module.exports = {
             const formattedDate = `${day}-${month}-${year}`;
             
             const password = generatePassword(8);
+            const managerPassword = generatePassword(8);
 
             const newRestaurant = new Restaurant({
                 name: req.body.name,
@@ -37,8 +38,12 @@ module.exports = {
                 plan: "enterprise"
             });
 
+            const payload = req.body;
+            payload.password = managerPassword;
+
             const managerTrial = await createTrialManager(newRestaurant._id, req.body);
             const waiterTrial = await createTrialWaiter(newRestaurant._id, req.body);
+            console.log({managerTrial})
 
             await newRestaurant.save();
             await receiveFreeTrialRequest(newRestaurant);
@@ -95,7 +100,7 @@ function generatePassword(length) {
   async function createTrialManager(restaurant_id, data) {
     try {
         const email = generateRandomEmail(data.name);
-
+        console.log({data})
         const newManager = new User({
             name: data.name,
             email: email,
