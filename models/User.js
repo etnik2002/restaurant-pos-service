@@ -3,11 +3,14 @@ const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema({
     name: { type: String },
+    email: { type: String, unique: true },
+    password: { type: String },
     pin: { type: Number },
     role: {
         type: String,
         enum: ['ceo', 'manager', 'supervisor'],
     },
+    restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' },
 })
 
 userSchema.methods.generateAuthToken = function (data) {

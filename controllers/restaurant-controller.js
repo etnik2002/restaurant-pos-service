@@ -39,27 +39,37 @@ module.exports = {
         }
     }, 
 
-    login: async (req,res) => {
+    login: async (req, res) => {
         try {
-            const restaurant = await Restaurant.findOne({ email: req.body.email });
-            if (!restaurant) {
-              return res.status(401).json({ message: "Invalid Email " });
+          const restaurant = await Restaurant.findOne({ email: req.body.email });
+      
+          if (!restaurant) {
+            return res.status(404).json("Restaurant not found");
+          }
+      
+          const isFreeTrial = await checkRestaurantAccessType(restaurant);
+      
+          if (isFreeTrial) {
+            const response = await checkFreeTrialExpiration(restaurant);
+            if (response.access === false) {
+              return res.status(401).json(response.message);
             }
+          }
       
-            const validPassword = req.body.password === restaurant.password;
+          const validPassword = req.body.password === restaurant.password;
       
-            if (!validPassword) {
-              return res.status(401).json({ data: null, message: "Invalid  Password" });
-            }
+          if (!validPassword) {
+            return res.status(401).json({ data: null, message: "Invalid Password" });
+          }
       
-            const token = restaurant.generateAuthToken(restaurant);
-            res.status(200).json({ data: token, message: "logged in successfully" });
-          
+          const token = restaurant.generateAuthToken(restaurant);
+          res.status(200).json({ data: token, message: "Logged in successfully" });
         } catch (error) {
-            console.log(error);
-            return res.status(500).json(`error -> ${error}`); 
+          console.log(error);
+          return res.status(500).json(`Error -> ${error}`);
         }
-    },
+      },
+      
 
     getAllRestaurants: async (req,res) => {
         try {
@@ -164,4 +174,54 @@ module.exports = {
         }
     },
 
+    checkRestaurantAccessType: checkRestaurantAccessType,
+
+}
+
+async function checkRestaurantAccessType(restaurant) {
+    try {
+        console.log(restaurant)
+        console.log({r_access: restaurant.access})
+        if(restaurant.access == "free_trial") {
+            return true;
+        }
+
+        return false;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function checkFreeTrialExpiration(user) {
+    try {
+        console.log(user)
+        
+        if(user.access != "free_trial") {
+            return { message: "No free trial access!" };
+        }
+
+        const today = new Date();
+        let day = today.getDate();
+        let month = today.getMonth() + 1; 
+        const year = today.getFullYear();
+        
+        if (day < 10) {
+          day = `0${day}`;
+        }
+        
+        if (month < 10) {
+          month = `0${month}`;
+        }
+        
+        const formattedDate = `${day}-${month}-${year}`;
+
+        if(user.trialDate < formattedDate) {
+            return { message: "Free trial ended. Please contact our support team to start using InsyLink today.", access: false };
+        }
+
+        return { message: "Successfull login to free trial account. Please contact our support team to start using InsyLink today.", access: true };
+
+    } catch(error) {
+
+    }
 }

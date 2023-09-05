@@ -5,6 +5,11 @@ const restaurantSchema = mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    access: { type: String, required: true },
+    trialDate: { type: String, },
+    isActive: { type: Boolean, },
+    plan: { type: String, required: true },
+    
 })
 
 restaurantSchema.methods.generateAuthToken = function (data) {
