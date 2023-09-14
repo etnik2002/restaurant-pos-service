@@ -94,7 +94,8 @@ module.exports = {
 
     getRestaurantProducts : async (req,res) => {
         try {
-            const products = await Product.aggregate([{ $match: { restaurant_id: req.params.restaurant_id } }]);
+            const products = await Product.find({restaurant_id: req.params.restaurant_id}).populate('category');
+            console.log(products)
             return res.status(200).json(products);      
         } catch (error) {
             console.log(error);
