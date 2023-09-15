@@ -177,6 +177,14 @@ module.exports = {
 
     checkRestaurantAccessType: checkRestaurantAccessType,
 
+    completeSetup: async (req,res) => {
+        try {
+            await Restaurant.findByIdAndUpdate(req.params.id, { $set: { isSetup: true } });
+        } catch (error) {
+            return res.status(500).json("errir -> " + error)
+        }
+    }
+
 }
 
 async function checkRestaurantAccessType(restaurant) {

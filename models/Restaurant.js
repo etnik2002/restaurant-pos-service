@@ -9,7 +9,7 @@ const restaurantSchema = mongoose.Schema({
     trialDate: { type: String, },
     isActive: { type: Boolean, },
     plan: { type: String, required: true },
-    
+    isSetup: { type: Boolean, default: false }
 })
 
 restaurantSchema.methods.generateAuthToken = function (data) {
