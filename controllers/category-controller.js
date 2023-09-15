@@ -65,19 +65,31 @@ module.exports = {
     editCategoryByID: async(req,res) => {
         try {
             const result = await cloudinary.uploader.upload(req.file.path);
-            console.log(result)
             const category = await Category.findById(req.params.id)
+
             const editPayload = {
                 name : req.body.name || category.name,
                 tax : req.body.tax || category.tax,
-                iamge : result.secure_url,
+                image : result.secure_url || category.image,
             }
-            await Category.findByIdAndUpdate(category?._id,editPayload)
+
+            await Category.findByIdAndUpdate(category?._id, editPayload)
             return res.status(200).json('Category Updated Succesfully')
         } catch (error) {
             console.log(error)
             return res.status(500).json(`error -> ${error}`); 
         }
-    }
+    },
+
+
+    deleteCategory: async (req,res) => {
+        try {
+            await Category.findByIdAndRemove(req.params.id);
+            return res.status(200).json("deleted sucessfulyesafasmefoiesjnf")
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json(`error -> ${error}`)
+        }
+    },
 
 }

@@ -41,5 +41,36 @@ module.exports = {
     },
 
     
+    editProduct: async(req,res) => {
+        try {
+            const result = await cloudinary.uploader.upload(req.file.path);
+            const product = await Product.findById(req.params.id)
+
+            const editPayload = {
+                name : req.body.name || product.name,
+                price : req.body.price || product.price,
+                tax : req.body.tax || product.tax,
+                stock : req.body.price || product.stock,
+                image : result.secure_url || product.image,
+            }
+            
+            await Product.findByIdAndUpdate(product?._id, editPayload)
+            return res.status(200).json('Category Updated Succesfully')
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json(`error -> ${error}`); 
+        }
+    },
+
+
+    deleteProduct: async (req,res) => {
+        try {
+            await Product.findByIdAndRemove(req.params.id);
+            return res.status(200).json("Product sucessfulyesafasmefoiesjnf")
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json(`error -> ${error}`)
+        }
+    },
 
 }
