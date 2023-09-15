@@ -9,6 +9,16 @@ const productStorage = multer.diskStorage({
   },
 });
 
-const productUpload = multer({ storage: productStorage });
+const categoryStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/images/category');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
 
-module.exports = { productUpload };
+const productUpload = multer({ storage: productStorage });
+const categoryUpload = multer({ storage: categoryStorage });
+
+module.exports = { productUpload,categoryUpload };
