@@ -70,6 +70,36 @@ module.exports = {
         }
       },
       
+      scannerLogin: async (req,res) => {
+        try {
+            const restaurant = await Restaurant.findById(req.params.id);
+            if (!restaurant) {
+                return res.status(404).json("Restaurant not found");
+              }
+          
+              const isFreeTrial = await checkRestaurantAccessType(restaurant);
+          
+              if (isFreeTrial) {
+                const response = await checkFreeTrialExpiration(restaurant);
+                if (response.access === false) {
+                  return res.status(401).json(response.message);
+                }
+              }
+          
+              const validPassword = req.body.password === restaurant.password;
+            
+              if (!validPassword) {
+                return res.status(401).json({ data: null, message: "Invalid Password" });
+              }
+          
+              const token = restaurant.generateAuthToken(restaurant);
+              res.status(200).json({ data: token, message: "Logged in successfully" });
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json("errir -> " + error)
+        }
+      },
 
     getAllRestaurants: async (req,res) => {
         try {
