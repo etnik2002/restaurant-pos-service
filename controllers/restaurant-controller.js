@@ -1,6 +1,5 @@
 const mongoose  = require("mongoose");
 const Category = require("../models/Category");
-const Extras = require("../models/Extras");
 const Floor = require("../models/Floor");
 const Order = require("../models/Order");
 const Product = require("../models/Product");
@@ -73,6 +72,7 @@ module.exports = {
       scannerLogin: async (req,res) => {
         try {
             const restaurant = await Restaurant.findById(req.params.id);
+            console.log(restaurant)
             if (!restaurant) {
                 return res.status(404).json("Restaurant not found");
               }
@@ -195,15 +195,6 @@ module.exports = {
       },
       
 
-    getRestaurantExtras : async (req,res) => {
-        try {
-            const extras = await Extras.aggregate([{ $match: { restaurant_id: req.params.restaurant_id } }]);
-            return res.status(200).json(extras);            
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json(`error -> ${error}`); 
-        }
-    },
 
     checkRestaurantAccessType: checkRestaurantAccessType,
 

@@ -24,7 +24,6 @@ if (cluster.isMaster) {
   require("dotenv").config();
 
   const categoryRoutes = require("./routes/category");
-  const extrasRoutes = require("./routes/extras");
   const floorRoutes = require("./routes/floor");
   const orderRoutes = require("./routes/order");
   const productRoutes = require("./routes/product");
@@ -80,7 +79,6 @@ if (cluster.isMaster) {
   })
 
   app.use('/category', categoryRoutes);
-  app.use('/extras', extrasRoutes);
   app.use('/floor', floorRoutes);
   app.use('/order', orderRoutes);
   app.use('/product', productRoutes);

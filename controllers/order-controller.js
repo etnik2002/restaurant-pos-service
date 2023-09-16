@@ -10,15 +10,24 @@ module.exports = {
             const cart = req.body.cart;
             let products = [];
             let price = 0;
+            let orderedProducts = [];
+            
+
             cart.map((item) => {
+                orderedProducts.push({...item , note:item.note})
                 products.push(item._id);
                 price += item.price;
             })
+
+            console.log(orderedProducts)
+
+            
 
             const newOrder = new Order({
                 products: products,
                 waiter: req.body.waiter,
                 table: req.body.table,
+                orderedProducts: orderedProducts,
                 restaurant_id: req.params.restaurant_id,
                 price: price,
                 date: moment(new Date()).format('DD-MM-YYYY'),
@@ -40,7 +49,6 @@ module.exports = {
             });
             
             for (const productId in productCounts) {
-              console.log(`Product ID: ${productId}, Count: ${productCounts[productId]}`);
                 await Product.findByIdAndUpdate(productId, { $inc: { sales: productCounts[productId] } });
             }
 
