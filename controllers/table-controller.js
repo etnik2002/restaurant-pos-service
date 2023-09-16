@@ -76,7 +76,7 @@ module.exports = {
 
     payTable: async (req,res) => {
         try {
-            await Table.findByIdAndUpdate(req.params.id, { $set: { isPaid: true }});
+            await Table.findByIdAndUpdate(req.params.id, { $set: { isPaid: true , isTaken:false }});
             await Order.findByIdAndUpdate(req.params.id, { $set: { isPaid: true }});
             return res.status(200).json("Order paid");
         } catch (error) {
