@@ -193,6 +193,17 @@ module.exports = {
           return res.status(500).json(`error -> ${error}`);
         }
       },
+
+      clearCompletedOrders: async (req, res) => {
+        try {
+          await Order.deleteMany({ restaurant_id: req.params.restaurant_id, isPaid: true });
+    
+          return res.status(200).json("Completed orders cleared successfully");
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json(`Error -> ${error}`);
+        }
+      },
       
 
 
