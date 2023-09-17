@@ -30,6 +30,7 @@ module.exports = {
                 orderedProducts: orderedProducts,
                 restaurant_id: req.params.restaurant_id,
                 price: price,
+                type: req.body.type,
                 date: moment(new Date()).format('DD-MM-YYYY'),
                 time: moment(new Date()).format('hh:mm'),
             })

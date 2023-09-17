@@ -6,6 +6,7 @@ const orderSchema = mongoose.Schema({
     isReady: { type: Boolean, default: false },
     date: { type: String },
     time: { type: String },
+    type: { type: String },
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     orderedProducts: [],
     waiter: { type: mongoose.Schema.Types.ObjectId, ref: 'Waiter' },
