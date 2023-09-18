@@ -4,8 +4,6 @@ const orderSchema = mongoose.Schema({
     price: { type: Number },
     isPaid: { type: Boolean, default: false },
     isReady: { type: Boolean, default: false },
-    date: { type: String },
-    time: { type: String },
     type: { type: String },
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     orderedProducts: [],
@@ -13,6 +11,7 @@ const orderSchema = mongoose.Schema({
     confirmed_by: { type: mongoose.Schema.Types.ObjectId, ref: 'Waiter' },
     table: { type: mongoose.Schema.Types.ObjectId, ref: 'Table' },
     restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' },
+    date: { type: String },
 })
 
 

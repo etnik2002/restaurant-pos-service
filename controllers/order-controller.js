@@ -31,13 +31,14 @@ module.exports = {
                 restaurant_id: req.params.restaurant_id,
                 price: price,
                 type: req.body.type,
-                date: moment(new Date()).format('DD-MM-YYYY'),
-                time: moment(new Date()).format('hh:mm'),
+                date: moment().format('DD-MM-YYYY'),
+                // date: moment().format('MM:hh'),
             })
 
             const createdOrder = await newOrder.save();
 
             const productCounts = {};
+            
             
             cart.forEach((product) => {
               const productId = product._id;

@@ -5,7 +5,8 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Restaurant = require("../models/Restaurant");
 const bcrypt= require('bcrypt');
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const moment = require("moment");
 
 function compare( a, b ) {
     if ( a.sales < b.sales ){
@@ -194,18 +195,29 @@ module.exports = {
         }
       },
 
-      clearCompletedOrders: async (req, res) => {
+      getTodaysOrders: async (req, res) => {
         try {
-          await Order.deleteMany({ restaurant_id: req.params.restaurant_id, isPaid: true });
-    
-          return res.status(200).json("Completed orders cleared successfully");
+          const currentDate = moment().format('DD-MM-YYYY');
+
+          const orders = await Order.find({
+            restaurant_id: req.params.restaurant_id,
+            date: { $gte: currentDate, $lte: currentDate } 
+          })            
+          .populate('waiter products restaurant_id')
+          .populate({
+            path: 'table',
+            populate: { path: 'floor' },
+          });
+      
+          console.log(orders);
+          return res.status(200).json(orders);
         } catch (error) {
-          console.error(error);
-          return res.status(500).json(`Error -> ${error}`);
+          console.log(error);
+          return res.status(500).json(error);
         }
       },
       
-
+      
 
     checkRestaurantAccessType: checkRestaurantAccessType,
 
