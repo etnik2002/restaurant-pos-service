@@ -73,7 +73,7 @@ module.exports = {
       scannerLogin: async (req,res) => {
         try {
             const restaurant = await Restaurant.findById(req.params.id);
-            console.log(restaurant)
+            console.log({restaurant})
             if (!restaurant) {
                 return res.status(404).json("Restaurant not found");
               }
@@ -87,11 +87,11 @@ module.exports = {
                 }
               }
           
-              const validPassword = req.body.password === restaurant.password;
+              // const validPassword = req.body.password === restaurant.password;
             
-              if (!validPassword) {
-                return res.status(401).json({ data: null, message: "Invalid Password" });
-              }
+              // if (!validPassword) {
+              //   return res.status(401).json({ data: null, message: "Invalid Password" });
+              // }
           
               const token = restaurant.generateAuthToken(restaurant);
               res.status(200).json({ data: token, message: "Logged in successfully" });
