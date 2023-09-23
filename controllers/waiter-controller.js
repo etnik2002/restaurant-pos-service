@@ -20,6 +20,23 @@ module.exports = {
         }
     },
 
+    deleteWaiter: async (req, res) => {
+        try {
+            const deletedWaiter = await Waiter.findByIdAndRemove({
+                _id: req.params.id,
+            });
+    
+            if (deletedWaiter) {
+                return res.status(200).json("Waiter deleted successfully");
+            } else {
+                return res.status(404).json("Waiter not found");
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(`Error -> ${error}`);
+        }
+    },
+
     login: async (req,res) => {
         try {
             const waiter = await Waiter.findOne({ restaurant_id: req.params.restaurant_id, pin: req.body.pin });
@@ -48,9 +65,10 @@ module.exports = {
         } catch (error) {
             console.log(error);
             return res.status(500).json(`error -> ${error}`); 
-        }
+        }   
     },
 
+    
     getWaiterOrders: async (req,res) => {
         try {
             const orders = await Order.aggregate([{ $match: { restaurant_id: req.params.restaurant_id, waiter: req.params.waiter_id } }])
