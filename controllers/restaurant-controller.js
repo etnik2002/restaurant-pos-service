@@ -198,7 +198,7 @@ module.exports = {
       getTodaysOrders: async (req, res) => {
         try {
           const currentDate = moment().format('DD-MM-YYYY');
-
+          
           const orders = await Order.find({
             restaurant_id: req.params.restaurant_id,
             date: { $gte: currentDate, $lte: currentDate } 

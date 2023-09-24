@@ -19,10 +19,6 @@ module.exports = {
                 price += item.price;
             })
 
-            console.log(orderedProducts)
-
-            
-
             const newOrder = new Order({
                 products: products,
                 waiter: req.body.waiter,
@@ -32,7 +28,6 @@ module.exports = {
                 price: price,
                 type: req.body.type,
                 date: moment().format('DD-MM-YYYY'),
-                // date: moment().format('MM:hh'),
             })
 
             const createdOrder = await newOrder.save();

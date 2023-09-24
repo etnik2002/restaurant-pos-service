@@ -12,7 +12,7 @@ const orderSchema = mongoose.Schema({
     table: { type: mongoose.Schema.Types.ObjectId, ref: 'Table' },
     restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' },
     date: { type: String },
-})
+}, { timestamps: true } )
 
 
 module.exports = mongoose.model("Order", orderSchema);
