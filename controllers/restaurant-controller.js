@@ -7,6 +7,7 @@ const Restaurant = require("../models/Restaurant");
 const bcrypt= require('bcrypt');
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
+const Waiter = require("../models/Waiter");
 
 function compare( a, b ) {
     if ( a.sales < b.sales ){
@@ -170,6 +171,16 @@ module.exports = {
             return res.status(500).json(`error -> ${error}`); 
         }
     },
+    
+    getAllWaiters: async (req, res) => {
+      try {
+          const waiters = await Waiter.find({restaurant_id: req.params.restaurant_id } );
+          return res.status(200).json(waiters);
+      } catch (error) {
+          console.log(error);
+          return res.status(500).json(`error -> ${error}`);
+      }
+  },
     
     getRestaurantOrders: async (req, res) => {
         try {
