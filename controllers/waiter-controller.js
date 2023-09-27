@@ -22,15 +22,9 @@ module.exports = {
 
     deleteWaiter: async (req, res) => {
         try {
-            const deletedWaiter = await Waiter.findByIdAndRemove({
-                _id: req.params.id,
-            });
-    
-            if (deletedWaiter) {
-                return res.status(200).json("Waiter deleted successfully");
-            } else {
-                return res.status(404).json("Waiter not found");
-            }
+            await Waiter.findByIdAndRemove( req.params.id );
+            return res.status(200).json("Waiter deleted successfully");
+           
         } catch (error) {
             console.log(error);
             return res.status(500).json(`Error -> ${error}`);
