@@ -2,10 +2,7 @@ const moment = require("moment");
 const Order = require("../models/Order");
 const Table = require("../models/Table");
 const Product = require("../models/Product");
-const { ThermalPrinter, PrinterTypes, CharacterSet, BreakLine } = require('node-thermal-printer');
-const escpos = require('escpos');
-const usb = require('usb');
-const printer = new escpos.Printer(usb);
+
 
 
 module.exports = {
@@ -55,58 +52,6 @@ module.exports = {
             }
 
             await Table.findByIdAndUpdate(req.params.table_id, { $set: { isTaken: true, current_order: createdOrder._id } });
-            
-            const vendorId = 1208; 
-            const productId = 3616; 
-            
-            const device = usb.findByIds(vendorId, productId);
-            
-            if (device) {
-              device.open((error) => {
-                if (error) {
-                  console.error('Error opening printer:', error);
-                  alert('Error opening printer. Please try again.');
-                  return;
-                }
-            
-                function sendCommand(command) {
-                  const buffer = Buffer.from(command, 'binary');
-                  device.controlTransfer(0x40, 0x02, 0x0002, 0, buffer, (error) => {
-                    if (error) {
-                      console.error('Error sending command:', error);
-                    }
-                  });
-                }
-            
-                const receiptText = `
-                  --------------------------------
-                  RECEIPT HEADER
-                  --------------------------------
-                  Item           Quantity  Price
-                  --------------------------------
-                  Item 1         2         $10.00
-                  Item 2         1         $5.00
-                  --------------------------------
-                  Total:                   $15.00
-                  --------------------------------
-                  Thank you for your purchase!
-                `;
-            
-                sendCommand('\x1B\x40'); 
-                sendCommand('\x1B\x61\x01'); 
-                sendCommand(receiptText);
-                sendCommand('\x0A'); 
-                sendCommand('\x1D\x56\x41\x10');
-            
-                device.close((error) => {
-                  if (error) {
-                    console.error('Error closing printer:', error);
-                  }
-                });
-              });
-            } else {
-              console.error('Printer not found.');
-            }
          
             return res.status(201).json("Order placed");
         } catch (error) {
