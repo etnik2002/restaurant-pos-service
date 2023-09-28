@@ -24,7 +24,7 @@ module.exports = {
             const newOrder = new Order({
                 products: products,
                 waiter: req.body.waiter,
-                table: req.body.table,
+                table: req.body.type == "dineIn" ? req.body.table : null,
                 orderedProducts: orderedProducts,
                 restaurant_id: req.params.restaurant_id,
                 price: price,
