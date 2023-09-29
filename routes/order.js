@@ -4,6 +4,8 @@ const { createOrder, getOrderById, payOrder, readyOrder, editOrder } = require("
 
 router.post('/create/:restaurant_id/:table_id', createOrder);
 
+router.post('/create/takeaway/:restaurant_id', createOrder);
+
 router.get('/:id', getOrderById);
 
 router.post('/:id', editOrder)
