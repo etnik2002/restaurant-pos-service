@@ -60,6 +60,27 @@ module.exports = {
         }
     },
 
+    editOrder: async (req, res) => {
+        try {
+          const products = req.body.products;
+          const order = await Order.findById(req.params.id);
+      
+          const updatedProducts = [...order.orderedProducts, ...products];
+      
+          const editPayload = {
+            orderedProducts: updatedProducts,
+          };
+      
+          await Order.findByIdAndUpdate(order._id, editPayload);
+      
+          return res.status(200).json("Order successfully updated");
+        } catch (error) {
+          console.log(error);
+          return res.status(500).json(`Error -> ${error}`);
+        }
+      },
+      
+
 
     getOrderById: async (req,res) => {
         try {

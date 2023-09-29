@@ -22,7 +22,6 @@ module.exports = {
                 restaurant_id: req.params.restaurant_id
             })
 
-            console.log({newProduct})
             await newProduct.save();
             return res.status(201).json("product created");
         } catch (error) {
