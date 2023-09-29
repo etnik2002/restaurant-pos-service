@@ -60,7 +60,7 @@ module.exports = {
         }
     },
 
-    createOrder: async (req,res) => {
+    takeawayOrder: async (req,res) => {
         try {
             const cart = req.body.cart;
             let products = [];

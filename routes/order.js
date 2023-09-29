@@ -1,10 +1,10 @@
 const router = require("express").Router();
-const { createOrder, getOrderById, payOrder, readyOrder, editOrder } = require("../controllers/order-controller");
+const { createOrder, getOrderById, payOrder, readyOrder, editOrder, takeawayOrder } = require("../controllers/order-controller");
 
 
+router.post('/create/takeaway/:restaurant_id', takeawayOrder);
 router.post('/create/:restaurant_id/:table_id', createOrder);
 
-router.post('/create/takeaway/:restaurant_id', createOrder);
 
 router.get('/:id', getOrderById);
 
