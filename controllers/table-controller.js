@@ -33,6 +33,16 @@ module.exports = {
         }
     },
 
+    deleteTable: async (req,res) => {
+        try {
+            await Table.findByIdAndRemove(req.params.id);
+            return res.status(200).json("Successfully deleted order");
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(`error -> ${error}`); 
+        }
+    },
+
     getTableById: async (req,res) => {
         try {
             const table = await Table.aggregate([{ $match: { _id: req.params.id, restaurant_id: req.params.restaurant_id } }]);

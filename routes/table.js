@@ -1,8 +1,10 @@
 const router = require("express").Router();
-const { createTable, getTableById, takeTable, leaveTable, payTable, moveTable } = require("../controllers/table-controller");
+const { createTable, getTableById, takeTable, leaveTable, payTable, moveTable, deleteTable } = require("../controllers/table-controller");
 
 
 router.post('/create/:restaurant_id/:floor', createTable);
+
+router.post('/delete/:id', deleteTable);
 
 router.get('/:id', getTableById);
 
