@@ -2,6 +2,7 @@ const moment = require("moment");
 const Order = require("../models/Order");
 const Table = require("../models/Table");
 const Product = require("../models/Product");
+const Ingredient = require("../models/Ingredient");
 
 
 
@@ -35,24 +36,55 @@ module.exports = {
             const createdOrder = await newOrder.save();
 
             const productCounts = {};
-            
-            
-            cart.forEach((product) => {
-              const productId = product._id;
-              
-              if (!productCounts[productId]) {
-                productCounts[productId] = 1;
-              } else {
-                productCounts[productId]++;
-              }
-            });
-            
+
+            for (const product of cart) {
+                const productId = product._id;
+
+                if (!productCounts[productId]) {
+                    productCounts[productId] = 1;
+                } else {
+                    productCounts[productId]++;
+                }
+            }
+
             for (const productId in productCounts) {
                 await Product.findByIdAndUpdate(productId, { $inc: { sales: productCounts[productId] } });
             }
 
             await Table.findByIdAndUpdate(req.params.table_id, { $set: { isTaken: true, current_order: createdOrder._id } });
-         
+            var test = 0
+            for (const orderedProduct of orderedProducts) {
+                if (orderedProduct.ingredients.length > 0) {
+                    for (const ingredientData of orderedProduct.ingredients) {
+                        const ingredientId = ingredientData.ingredient;
+                        const ingredientValue = ingredientData.value;
+
+                        const ingredient = await Ingredient.findById(ingredientId);
+
+                        if (ingredient) {
+                            ingredient.stock -= ingredientValue;
+                            await ingredient.save();
+                        }
+                    }
+                } else {
+                    test +=1;
+                    const productIdWithoutIngredients = orderedProduct._id;
+                    const productCount = productCounts[productIdWithoutIngredients] || 0;
+
+                    const productWithoutIngredients = await Product.findById(productIdWithoutIngredients);
+
+                    console.log({ productCount, test });
+
+                    if (productWithoutIngredients) {
+                        console.log({ stock1: productWithoutIngredients.stock, pCount: productCount });
+                        productWithoutIngredients.stock -= (productCount % productCount) + 1;
+                        await productWithoutIngredients.save();
+                        console.log({ stock2: productWithoutIngredients.stock });
+                    }
+                }
+            }
+
+
             return res.status(201).json("Order placed");
         } catch (error) {
             console.log(error);

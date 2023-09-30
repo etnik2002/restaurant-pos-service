@@ -32,6 +32,8 @@ if (cluster.isMaster) {
   const userRoutes = require("./routes/table");
   const waiterRoutes = require("./routes/waiter");
   const trialRoutes = require("./routes/trial");
+  const ingredientRoutes = require("./routes/ingredient");
+
   var cookieParser = require('cookie-parser');
 
   app.use(function (req, res, next) {
@@ -87,6 +89,7 @@ if (cluster.isMaster) {
   app.use('/user', userRoutes);
   app.use('/waiter', waiterRoutes);
   app.use('/trial', trialRoutes);
+  app.use('/ingredient', ingredientRoutes);
 
 
   const PORT = process.env.PORT || 4444;

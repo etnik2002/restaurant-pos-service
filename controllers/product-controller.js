@@ -19,7 +19,8 @@ module.exports = {
                 category: req.body.category,
                 stock: req.body.stock,
                 image: result.secure_url,
-                restaurant_id: req.params.restaurant_id
+                restaurant_id: req.params.restaurant_id,
+                ingredients: req.body.ingredients,
             })
 
             await newProduct.save();
