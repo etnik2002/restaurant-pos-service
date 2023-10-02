@@ -3,24 +3,26 @@ const Order = require("../models/Order");
 const Table = require("../models/Table");
 const Product = require("../models/Product");
 const Ingredient = require("../models/Ingredient");
-
+const uuid = require('uuid');
 
 
 module.exports = {
 
     createOrder: async (req,res) => {
         try {
-            console.log("ktau")
             const cart = req.body.cart;
             let products = [];
             let price = 0;
             let orderedProducts = [];
+            let uniqueID = "";
             
-
             cart.map((item) => {
-                orderedProducts.push({...item , note:item.note})
+                uniqueID = uuid.v1();
+                console.log({uniqueID})
+                orderedProducts.push({...item , note:item.note, uuid: uniqueID})
                 products.push(item._id);
                 price += item.price;
+                uniqueID = "";
             })
 
             const newOrder = new Order({
@@ -49,11 +51,9 @@ module.exports = {
             }
 
             await Table.findByIdAndUpdate(req.params.table_id, { $set: { isTaken: true, current_order: createdOrder._id } });
-            var test = 0
             for (const orderedProduct of orderedProducts) {
                 if (orderedProduct.ingredients.length > 0) {
                     for (const ingredientData of orderedProduct.ingredients) {
-                        console.log({ingredientData})
                         const ingredientId = ingredientData.ingredient;
                         const ingredientValue = ingredientData.value;
 
@@ -65,7 +65,6 @@ module.exports = {
                         }
                     }
                 } else {
-                    test +=1;
                     const productIdWithoutIngredients = orderedProduct._id;
                     const productCount = productCounts[productIdWithoutIngredients] || 0;
 
@@ -88,17 +87,19 @@ module.exports = {
 
     takeawayOrder: async (req,res) => {
         try {
-            console.log("ktau")
             const cart = req.body.cart;
             let products = [];
             let price = 0;
             let orderedProducts = [];
+            let uniqueID = "";
             
-
             cart.map((item) => {
-                orderedProducts.push({...item , note:item.note})
+                uniqueID = uuid.v1();
+                console.log({uniqueID})
+                orderedProducts.push({...item , note:item.note, uuid: uniqueID})
                 products.push(item._id);
                 price += item.price;
+                uniqueID = "";
             })
 
             const newOrder = new Order({
@@ -130,7 +131,6 @@ module.exports = {
             for (const orderedProduct of orderedProducts) {
                 if (orderedProduct.ingredients.length > 0) {
                     for (const ingredientData of orderedProduct.ingredients) {
-                        console.log({ingredientData})
                         const ingredientId = ingredientData.ingredient;
                         const ingredientValue = ingredientData.value;
 
@@ -165,16 +165,22 @@ module.exports = {
 
     editOrder: async (req, res) => {
         try {
+            
           const products = req.body.products;
           const order = await Order.findById(req.params.id);
       
           let addedProducts = [];
           let product = {};
+          let uniqueID = "";
+          
           products.map((p) => {
+            uniqueID = uuid.v1();
             p.isAddedAfter = true; 
+            p.uuid = uniqueID;
             product = p;
             addedProducts.push(product);
             product = {};
+            uniqueID = "";
           })
         
           const updatedProducts = [...order.orderedProducts, ...products];
