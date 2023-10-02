@@ -10,6 +10,7 @@ module.exports = {
 
     createOrder: async (req,res) => {
         try {
+            console.log("ktau")
             const cart = req.body.cart;
             let products = [];
             let price = 0;
@@ -47,22 +48,19 @@ module.exports = {
                 }
             }
 
-            for (const productId in productCounts) {
-                await Product.findByIdAndUpdate(productId, { $inc: { sales: productCounts[productId] } });
-            }
-
             await Table.findByIdAndUpdate(req.params.table_id, { $set: { isTaken: true, current_order: createdOrder._id } });
             var test = 0
             for (const orderedProduct of orderedProducts) {
                 if (orderedProduct.ingredients.length > 0) {
                     for (const ingredientData of orderedProduct.ingredients) {
+                        console.log({ingredientData})
                         const ingredientId = ingredientData.ingredient;
                         const ingredientValue = ingredientData.value;
 
                         const ingredient = await Ingredient.findById(ingredientId);
 
                         if (ingredient) {
-                            ingredient.stock -= ingredientValue;
+                            ingredient.stock -= ingredientValue / 100;
                             await ingredient.save();
                         }
                     }
@@ -73,13 +71,9 @@ module.exports = {
 
                     const productWithoutIngredients = await Product.findById(productIdWithoutIngredients);
 
-                    console.log({ productCount, test });
-
                     if (productWithoutIngredients) {
-                        console.log({ stock1: productWithoutIngredients.stock, pCount: productCount });
                         productWithoutIngredients.stock -= (productCount % productCount) + 1;
                         await productWithoutIngredients.save();
-                        console.log({ stock2: productWithoutIngredients.stock });
                     }
                 }
             }
@@ -94,6 +88,7 @@ module.exports = {
 
     takeawayOrder: async (req,res) => {
         try {
+            console.log("ktau")
             const cart = req.body.cart;
             let products = [];
             let price = 0;
@@ -107,7 +102,9 @@ module.exports = {
             })
 
             const newOrder = new Order({
+                products: products,
                 waiter: req.body.waiter,
+                table: req.body.type == "dineIn" ? req.body.table : null,
                 orderedProducts: orderedProducts,
                 restaurant_id: req.params.restaurant_id,
                 price: price,
@@ -118,24 +115,48 @@ module.exports = {
             const createdOrder = await newOrder.save();
 
             const productCounts = {};
-            
-            
-            cart.forEach((product) => {
-              const productId = product._id;
-              
-              if (!productCounts[productId]) {
-                productCounts[productId] = 1;
-              } else {
-                productCounts[productId]++;
-              }
-            });
-            
-            for (const productId in productCounts) {
-                await Product.findByIdAndUpdate(productId, { $inc: { sales: productCounts[productId] } });
+
+            for (const product of cart) {
+                const productId = product._id;
+
+                if (!productCounts[productId]) {
+                    productCounts[productId] = 1;
+                } else {
+                    productCounts[productId]++;
+                }
             }
 
             await Table.findByIdAndUpdate(req.params.table_id, { $set: { isTaken: true, current_order: createdOrder._id } });
-         
+            var test = 0
+            for (const orderedProduct of orderedProducts) {
+                if (orderedProduct.ingredients.length > 0) {
+                    for (const ingredientData of orderedProduct.ingredients) {
+                        console.log({ingredientData})
+                        const ingredientId = ingredientData.ingredient;
+                        const ingredientValue = ingredientData.value;
+
+                        const ingredient = await Ingredient.findById(ingredientId);
+
+                        if (ingredient) {
+                            ingredient.stock -= ingredientValue /100;
+                            await ingredient.save();
+                        }
+                    }
+                } else {
+                    test +=1;
+                    const productIdWithoutIngredients = orderedProduct._id;
+                    const productCount = productCounts[productIdWithoutIngredients] || 0;
+
+                    const productWithoutIngredients = await Product.findById(productIdWithoutIngredients);
+
+                    if (productWithoutIngredients) {
+                        productWithoutIngredients.stock -= (productCount % productCount) + 1;
+                        await productWithoutIngredients.save();
+                    }
+                }
+            }
+
+
             return res.status(201).json("Order placed");
         } catch (error) {
             console.log(error);
