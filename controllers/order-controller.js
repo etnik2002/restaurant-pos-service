@@ -127,7 +127,6 @@ module.exports = {
             }
 
             await Table.findByIdAndUpdate(req.params.table_id, { $set: { isTaken: true, current_order: createdOrder._id } });
-            var test = 0
             for (const orderedProduct of orderedProducts) {
                 if (orderedProduct.ingredients.length > 0) {
                     for (const ingredientData of orderedProduct.ingredients) {
@@ -143,7 +142,6 @@ module.exports = {
                         }
                     }
                 } else {
-                    test +=1;
                     const productIdWithoutIngredients = orderedProduct._id;
                     const productCount = productCounts[productIdWithoutIngredients] || 0;
 
@@ -170,12 +168,22 @@ module.exports = {
           const products = req.body.products;
           const order = await Order.findById(req.params.id);
       
+          let addedProducts = [];
+          let product = {};
+          products.map((p) => {
+            p.isAddedAfter = true; 
+            product = p;
+            addedProducts.push(product);
+            product = {};
+          })
+        
           const updatedProducts = [...order.orderedProducts, ...products];
       
           const editPayload = {
             orderedProducts: updatedProducts,
+            isReady: false,
           };
-      
+
           await Order.findByIdAndUpdate(order._id, editPayload);
       
           return res.status(200).json("Order successfully updated");
