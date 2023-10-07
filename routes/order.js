@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { createOrder, getOrderById, payOrder, readyOrder, editOrder, takeawayOrder } = require("../controllers/order-controller");
+const { createOrder, getOrderById, payOrder, readyOrder, editOrder, takeawayOrder, printReceipt } = require("../controllers/order-controller");
 
 
 router.post('/create/takeaway/:restaurant_id', takeawayOrder);
@@ -13,5 +13,7 @@ router.post('/:id', editOrder)
 router.post('/pay/:id/:tableID', payOrder)
 
 router.post('/ready/:id', readyOrder)
+
+router.post('/print/:id', printReceipt)
 
 module.exports = router;
