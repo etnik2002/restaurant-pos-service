@@ -78,37 +78,6 @@ module.exports = {
                 }
             }
 
-
-                const array = [
-                    {
-                        "orderDate": "2023-10-07T13:15:16.680Z",
-                        "items": [
-                          {
-                            "itemName": "string",
-                            "quantity": 0,
-                            "unitPrice": 0
-                          }
-                        ]
-                      }
-                  ];
-                  
-                  console.log({ newOrder });
-                  
-                  const response = await axios.post(
-                    'https://localhost:44322/WeatherForecast/print/32432',
-                    {
-                        "orderDate": "2023-10-07T17:38:39.694Z",
-                        "items": [
-                          {
-                            "orderedProductName": "test",
-                            "quantity": 1,
-                            "unitPrice": 42
-                          }
-                        ]
-                      },
-                    { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
-                  );
-                  
             return res.status(201).json("Order placed");
         } catch (error) {
             console.log(error);
@@ -263,69 +232,34 @@ module.exports = {
             return res.status(500).json(`error -> ${error}`); 
         }
     },
-
     printReceipt: async (req, res) => {
         try {
             const order = await Order.findById(req.params.id);
     
-            const formattedOrder = {
-                date: order.date, 
-                isPaid: order.isPaid,
-                isReady: order.isReady,
-                type: order.type,
-                waiter: order.waiter,
-                confirmed_by: order.confirmed_by,
-                table: order.table,
-                restaurant_id: order.restaurant_id,
-                orderedProducts: order.orderedProducts.map(product => ({
-                    _id: product._id,
-                    id: product.id,
-                    uuid: product.uuid,
+            const productsToPrint = {
+                orderDate: new Date().toISOString(), 
+                items: order.orderedProducts.map((product) => ({
                     name: product.name,
-                    image: product.image,
-                    category: product.category,
-                    restaurant_id: product.restaurant_id,
                     price: product.price,
-                    stock: product.stock
+                    quantity: 1,
                 }))
             };
     
-            await axios.post(
+            const response = await axios.post(
                 `https://localhost:44322/WeatherForecast/print/${req.params.id}`,
-                {
-                    "orderDate": "2023-10-07T20:24:01.865Z",
-                    "items": [
-                      {
-                        "orderedProductName": "striesafasefeasfang",
-                        "quantity": 0,
-                        "unitPrice": 30
-                      },
-                      {
-                        "orderedProductName": "strifsefaesfaesfasefng",
-                        "quantity": 0,
-                        "unitPrice": 4210
-                      },
-                      {
-                        "orderedProductName": "strifsefasefasefng",
-                        "quantity": 0,
-                        "unitPrice": 421
-                      },
-                      {
-                        "orderedProductName": "tesfesafefase",
-                        "quantity": 0,
-                        "unitPrice": 0
-                      }
-                    ]
-                  },
+                productsToPrint,
                 { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
             );
     
+            console.log(response.data); 
+    
             return res.status(200).json("Printed successfully");
         } catch (error) {
-            console.log(error);
-            return res.status(500).json(`error -> ${error}`);
+            console.error(error);
+            return res.status(500).json(`Error -> ${error.message}`);
         }
-    }
+    },
+
     
     
 
