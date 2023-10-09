@@ -260,7 +260,21 @@ module.exports = {
         }
     },
 
-    
+    testPrint: async (req,res) => {
+        try {
+            const test = { a: "test", b: "Test" };
+            await axios.post(
+                `https://localhost:44322/WeatherForecast/print/test`,
+                { test },
+                { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
+            );
+
+            return res.status(200).json("Printed")
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json(`Error -> ${error.message}`);
+        }
+    }
     
 
 }

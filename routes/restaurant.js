@@ -1,8 +1,10 @@
 const router = require("express").Router();
-const { createRestaurant, login, getRestaurantById, getAllRestaurants, getRestaurantProducts, getRestaurantCategories, getRestaurantFloor, getRestaurantOrders, mostOrderedDish, completeSetup, scannerLogin,getAllWaiters, getTodaysOrders } = require("../controllers/restaurant-controller");
+const { createRestaurant, login, getRestaurantById,registerPrinter, getAllRestaurants, getRestaurantProducts, getRestaurantCategories, getRestaurantFloor, getRestaurantOrders, mostOrderedDish, completeSetup, scannerLogin,getAllWaiters, getTodaysOrders } = require("../controllers/restaurant-controller");
 
 
 router.get('/floors/:restaurant_id', getRestaurantFloor);
+
+router.post('/printer/connect/:restaurant_id', registerPrinter);
 
 router.post('/create', createRestaurant);
 

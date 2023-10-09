@@ -7,6 +7,23 @@ const restaurantSchema = mongoose.Schema({
     password: { type: String, required: true },
     access: { type: String, required: true },
     trialDate: { type: String, },
+    printers: [
+        {
+            name: {
+                type: String
+            },
+            location: {
+                type: String
+            },
+            interface: {
+                type: String,
+                enum: ['bt', 'wifi', 'usb']
+            },
+            connection: {
+                type: String,
+            }
+        }
+    ],
     isActive: { type: Boolean, },
     plan: { type: String, required: true },
     isSetup: { type: Boolean, default: false },

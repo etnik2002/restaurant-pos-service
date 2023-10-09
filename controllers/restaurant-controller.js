@@ -70,6 +70,23 @@ module.exports = {
           return res.status(500).json(`Error -> ${error}`);
         }
       },
+
+      registerPrinter: async (req,res) => {
+        try {
+          const { name, location, interface, connection } = req.body;
+          const newPrinter = {
+            name, location, interface, connection
+          };
+          console.log({newPrinter})
+
+          await Restaurant.findByIdAndUpdate(req.params.restaurant_id, { $push: { printers: newPrinter } });
+
+          return res.status(200).json("Printer registered successfully");
+        } catch (error) {
+          console.log(error);
+          return res.status(500).json(`Error -> ${error}`);
+        }
+      },
       
       scannerLogin: async (req,res) => {
         try {
