@@ -245,13 +245,19 @@ module.exports = {
                 }))
             };
     
-            const response = await axios.post(
-                `https://localhost:44322/WeatherForecast/print/${req.params.id}`,
-                productsToPrint,
-                { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
-            );
-    
-            console.log(response.data); 
+            try {
+                const response = await axios.post(
+                    `https://localhost:44322/WeatherForecast/print/${req.params.id}`,
+                    productsToPrint,
+                    { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
+                );
+        
+                console.log(response.data); 
+                
+            } catch (error) {
+                console.log(error)
+                return res.status(500).json(`error -> ${error}`)
+            }
     
             return res.status(200).json("Printed successfully");
         } catch (error) {
@@ -264,7 +270,7 @@ module.exports = {
         try {
             const test = { a: "test", b: "Test" };
             await axios.post(
-                `https://localhost:44322/WeatherForecast/print/test`,
+                `https://insylinkprinterapi.azurewebsites.net/WeatherForecast/print/test`,
                 { test },
                 { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
             );

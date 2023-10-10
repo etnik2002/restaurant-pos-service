@@ -87,6 +87,20 @@ module.exports = {
           return res.status(500).json(`Error -> ${error}`);
         }
       },
+
+      deletePrinter: async (req,res) => {
+        try {
+          const restaurant = await Restaurant.findById(req.params.restaurant_id);
+          restaurant.printers.forEach((printer) => {
+            console.log(printer)
+          })
+
+          return res.status(200).json("successfully deleted printer")
+        } catch ( error) {
+          console.log(error);
+          return res.status(500).json(`Error -> ${error}`);
+        }
+      },
       
       scannerLogin: async (req,res) => {
         try {
