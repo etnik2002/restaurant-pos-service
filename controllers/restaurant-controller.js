@@ -8,6 +8,9 @@ const bcrypt= require('bcrypt');
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
 const Waiter = require("../models/Waiter");
+const OpenAIApi = require('openai');
+
+
 
 function compare( a, b ) {
     if ( a.sales < b.sales ){
@@ -269,9 +272,52 @@ module.exports = {
         } catch (error) {
             return res.status(500).json("errir -> " + error)
         }
-    }
+    },
+
+    help: async (req,res) => {
+      try {
+              const question = req.body.question;
+          
+              const introductionToOurApp = "Hey chat, this is our restaurant POS system. It has everything a POS system needs, including kitchen display settings, menu, ordering system, receipt printing, and an admin dashboard accessible on the web. Our app is called Insylink, available on iOS and Android devices.";
+          
+              const responses = {
+                connectToPrinter: "You can connect to the printers via Bluetooth, WiFi, or USB. Connecting via USB is the best option because it's more stable and always responsive. Here's how to connect to the Epson TM-M30 receipt printer: To connect via bluetooth or wifi, turn on your printer, hold the button that is located near the cashier cable slot, a receipt wil be printer with the ip address. Write the ip address in the field in the settings tab and hit save. Connecting via bluetooth or wifi is the same procedure, connecting via usb you need to provide the usb slot port in the input field and hit save.",
+                placeOrder: "To place an order, you have two options: takeaway and dine-in. For dine-in orders, go to the floors tab, select the floor, choose an available table, go to the menu tab, select products, and hit place order. For takeaway orders, go to the takeaway tab and follow the same procedure.",
+                printReceipt: "To print a receipt, go to the floors tab, select the table for which you want to print the receipt, and hit print. It will automatically print a receipt.",
+                addExtraProductsAfterTheOrderIsPlaced: "If the customer wants to add something to the order after placing it, go to the orders tab, hit edit on the order, add the additional products, and hit save.",
+                howToCreateFloor: "To create a floor, go to the floors tab, click on add floor, enter the floor's name in the popup, and hit create.",
+                howToCreateTables: "To create a table, go to the floors tab, select the floor, click on add table, enter the number of chairs for the table in the popup, and hit create.",
+                deleteFloor: "To delete a floor, go to the floors tab, hold the floor you want to delete, and confirm deletion in the popup.",
+                deleteTable: "To delete a table, go to the floors tab, select the floor, hold the table you want to delete, and confirm deletion in the popup.",
+              };
+          
+              const whatYouNeedToDo = `${introductionToOurApp}. Now, chat, if you don't know anything, don't apologize—just go straight to the answer. Your task is to take the user's question: ${question}, and use the responses provided in this object : ${JSON.stringify(responses)}. Respond to the user based on their question. If the user asks something outside the provided responses, apologize and state that you can't provide an answer on that topic. Please avoid modifying the responses, only fix grammar and typos if necessary.And please make sure to response in the language the question is made. Thank you.`;
+          
+              const apiKey = process.env.OPENAI_API_KEY;
+              const openai = new OpenAIApi.OpenAI({ key: apiKey });
+          
+              const messages = [
+                { role: "user", content: whatYouNeedToDo },
+                { role: "assistant", content: question },
+              ];
+          
+              const completion = await openai.chat.completions.create({
+                model: 'gpt-3.5-turbo',
+                messages: messages,
+              });
+          
+              const responseText = completion.choices[0].message.content;
+              console.log(responseText);
+          
+              res.status(200).json(responseText);
+            } catch (error) {
+              console.error("Error:", error);
+              res.status(500).json({ error: "Something went wrong -> " + error });
+            }
+        },
 
 }
+
 
 async function checkRestaurantAccessType(restaurant) {
     try {
