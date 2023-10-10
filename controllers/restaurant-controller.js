@@ -8,9 +8,13 @@ const bcrypt= require('bcrypt');
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
 const Waiter = require("../models/Waiter");
+<<<<<<< HEAD
 const OpenAIApi = require('openai');
 
 
+=======
+const { Types: { ObjectId } } = mongoose;
+>>>>>>> 1aab9e07adeb5f46214839c6fb63f38001f9c807
 
 function compare( a, b ) {
     if ( a.sales < b.sales ){
@@ -90,20 +94,30 @@ module.exports = {
           return res.status(500).json(`Error -> ${error}`);
         }
       },
-
-      deletePrinter: async (req,res) => {
+      deletePrinter: async (req, res) => {
         try {
-          const restaurant = await Restaurant.findById(req.params.restaurant_id);
-          restaurant.printers.forEach((printer) => {
-            console.log(printer)
-          })
-
-          return res.status(200).json("successfully deleted printer")
-        } catch ( error) {
-          console.log(error);
-          return res.status(500).json(`Error -> ${error}`);
+            const restaurant = await Restaurant.findById(req.params.restaurant_id);
+    
+            if (!restaurant) {
+                return res.status(404).json("Restaurant not found");
+            }
+    
+            const printerId = new ObjectId(req.params.printer_id);
+    
+            restaurant.printers = restaurant.printers.filter((printer) => {
+                return !printer._id.equals(printerId);
+            });
+    
+            await restaurant.save();
+    
+            return res.status(200).json("Successfully deleted printer");
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(`Error -> ${error}`);
         }
-      },
+    },
+    
+    
       
       scannerLogin: async (req,res) => {
         try {
