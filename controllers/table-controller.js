@@ -57,7 +57,7 @@ module.exports = {
         try {
             const movedTable = await Table.findByIdAndUpdate(req.params.table_id, { $set: { x: req.body.x, y: req.body.y } });
             console.log({ newX: movedTable.x, newY: movedTable.y });
-            return res.status(200).json("Table moved successfully -> new coords: " + movedTable.x, movedTable.y)
+            return res.status(200).json("Table moved successfully")
         } catch (error) {
             return res.status(500).json(`error -> ${error}`); 
         }

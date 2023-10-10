@@ -31,7 +31,11 @@ module.exports = {
 
     getFloorTables: async (req,res) => {
         try {
-            const tables = await Table.find( { restaurant_id: req.params.restaurant_id, floor: req.params.floor_id } )
+            const tables = await Table.find( { restaurant_id: req.params.restaurant_id, floor: req.params.floor_id } ).populate('current_order')
+            .populate({
+                path: 'current_order',
+                populate: { path: 'table' },
+              });
             res.status(200).json(tables);
         } catch (error) {
             console.log(error);
