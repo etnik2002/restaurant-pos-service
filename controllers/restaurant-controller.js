@@ -8,13 +8,9 @@ const bcrypt= require('bcrypt');
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
 const Waiter = require("../models/Waiter");
-<<<<<<< HEAD
 const OpenAIApi = require('openai');
 
 
-=======
-const { Types: { ObjectId } } = mongoose;
->>>>>>> 1aab9e07adeb5f46214839c6fb63f38001f9c807
 
 function compare( a, b ) {
     if ( a.sales < b.sales ){
