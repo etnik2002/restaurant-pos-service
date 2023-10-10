@@ -5,7 +5,7 @@ const restaurantSchema = mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    access: { type: String, required: true },
+    access: { type: String },
     trialDate: { type: String, },
     printers: [
         {
@@ -17,7 +17,6 @@ const restaurantSchema = mongoose.Schema({
             },
             interface: {
                 type: String,
-                enum: ['bt', 'wifi', 'usb']
             },
             connection: {
                 type: String,
