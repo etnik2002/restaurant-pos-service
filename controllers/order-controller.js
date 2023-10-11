@@ -247,7 +247,7 @@ module.exports = {
     
             try {
                 const response = await axios.post(
-                    `https://localhost:44322/WeatherForecast/print/${req.params.id}`,
+                    `https://insylinkprinterapi.azurewebsites.net/WeatherForecast/print/${req.params.id}`,
                     productsToPrint,
                     { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
                 );
