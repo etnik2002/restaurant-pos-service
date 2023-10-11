@@ -250,9 +250,10 @@ module.exports = {
                     `https://insylinkprinterapi.azurewebsites.net/WeatherForecast/print/${req.params.id}`,
                     productsToPrint,
                     { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
-                );
+                ).catch((err) => {
+                    console.log({resdata: err.response.data})
+                })
         
-                console.log(response.data); 
                 
             } catch (error) {
                 console.log(error)
