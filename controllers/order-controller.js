@@ -252,6 +252,7 @@ module.exports = {
                     { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
                 ).catch((err) => {
                     console.log({resdata: err.response.data})
+                    return res.status(500).json(err.response.data)
                 })
         
                 
