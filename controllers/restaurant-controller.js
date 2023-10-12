@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 const moment = require("moment");
 const Waiter = require("../models/Waiter");
 // const OpenAIApi = require('openai');
+const ObjectId = mongoose.Types.ObjectId;
 
 
 
@@ -90,6 +91,7 @@ module.exports = {
           return res.status(500).json(`Error -> ${error}`);
         }
       },
+
       deletePrinter: async (req, res) => {
         try {
             const restaurant = await Restaurant.findById(req.params.restaurant_id);
@@ -112,8 +114,6 @@ module.exports = {
             return res.status(500).json(`Error -> ${error}`);
         }
     },
-    
-    
       
       scannerLogin: async (req,res) => {
         try {
