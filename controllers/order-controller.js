@@ -218,7 +218,7 @@ module.exports = {
             await Table.findByIdAndUpdate(req.params.tableID, { $set: { isTaken:false, isPaid:true }})
             return res.status(200).json("Order is paid");
         } catch (error) {
-            console.log(error);
+            console.log(error);     
             return res.status(500).json(`error -> ${error}`); 
         }
     },
