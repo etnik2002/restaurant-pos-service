@@ -48,8 +48,16 @@ if (cluster.isMaster) {
    
   app.use(express.json());
   app.use(bodyParser.json());
-  app.use(cors());
   app.use(cookieParser(process.env.OUR_SECRET));
+
+  const corsOptions = {
+    origin: 'http://192.168.100.254:4445',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+  };
+
+  app.use(cors(corsOptions));
 
   // app.use(cors({
   //   origin: ['http://localhost:4462', 'https://admin-hakbus.vercel.app']
@@ -91,9 +99,22 @@ if (cluster.isMaster) {
   app.use('/trial', trialRoutes);
   app.use('/ingredient', ingredientRoutes);
 
+  const https = require('https');
+  const fs = require('fs'); 
+  const path = require('path')
 
+  const sslServer = https.createServer({
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
+  })
+  
+  
+  const IP_ADDRESS = "192.168.100.254";
   const PORT = process.env.PORT || 4444;
+  
   app.listen(PORT, () => {
     console.log(`Worker ${process.pid} listening on http://localhost:${PORT}`);
   });
+  
+  
 }

@@ -247,21 +247,20 @@ module.exports = {
     
             try {
                 const response = await axios.post(
-                    `https://insylinkprinterapi.azurewebsites.net/WeatherForecast/print/${req.params.id}`,
+                    `http://192.168.100.254:5069/WeatherForecast/print/${req.params.id}`,
                     productsToPrint,
                     { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
                 ).catch((err) => {
                     console.log({resdata: err.response.data})
                     return res.status(500).json(err.response.data)
                 })
-        
+                
+                return res.status(200).json("Printed")
                 
             } catch (error) {
                 console.log(error)
                 return res.status(500).json(`error -> ${error}`)
             }
-    
-            return res.status(200).json("Printed successfully");
         } catch (error) {
             console.error(error);
             return res.status(500).json(`Error -> ${error.message}`);
@@ -272,7 +271,7 @@ module.exports = {
         try {
             const test = { a: "test", b: "Test" };
             await axios.post(
-                `https://insylinkprinterapi.azurewebsites.net/WeatherForecast/print/test`,
+                `http://192.168.100.254:5069/WeatherForecast/print/test`,
                 { test },
                 { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
             );

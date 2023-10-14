@@ -15,7 +15,7 @@ router.post('/pay/:id/:tableID', payOrder)
 
 router.post('/ready/:id', readyOrder)
 
-router.post('/print/:id', printReceipt)
+router.get('/print/:id', printReceipt)
 
 
 module.exports = router;

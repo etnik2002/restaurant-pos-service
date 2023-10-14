@@ -27,6 +27,7 @@ module.exports = {
 
     createRestaurant: async (req,res) => {
         try {
+          console.log("login dispatched")
             // const salt = bcrypt.genSaltSync(10);
             // const hashedPassword = bcrypt.hashSync(req.body.password, salt);
             console.log(req.body)
