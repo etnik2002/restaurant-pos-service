@@ -48,16 +48,8 @@ if (cluster.isMaster) {
    
   app.use(express.json());
   app.use(bodyParser.json());
+  app.use(cors());
   app.use(cookieParser(process.env.OUR_SECRET));
-
-  const corsOptions = {
-    origin: 'http://192.168.100.254:4445',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204,
-  };
-
-  app.use(cors(corsOptions));
 
   // app.use(cors({
   //   origin: ['http://localhost:4462', 'https://admin-hakbus.vercel.app']
