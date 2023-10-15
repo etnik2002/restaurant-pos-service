@@ -274,6 +274,34 @@ module.exports = {
         }
       },
       
+      updateReceipt: async (req,res) => {
+        try {
+          const { useLogo, header, footer } = req.body;
+          const restaurant = await Restaurant.findById(req.params.id);
+          const updatedRestaurant = {
+            name: restaurant.name,
+            email: restaurant.email,
+            napasswordme: restaurant.password,
+            access: restaurant.access,
+            trialDate: restaurant.trialDate,
+            printers: restaurant.printers,
+            isActive: restaurant.isActive,
+            plan: restaurant.plan,
+            isSetup: restaurant.isSetup,
+            currency: restaurant.currency,
+            receipt: {
+              useLogo, header, footer
+            },
+          }
+          
+          await Restaurant.findByIdAndUpdate(req.params.id, updatedRestaurant);
+          return res.status(200).json("Updated");
+        } catch (error) {
+          console.log(error)
+          return res.status(200).json("error -> " + error);
+        }
+
+      },
       
 
     checkRestaurantAccessType: checkRestaurantAccessType,

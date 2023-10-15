@@ -27,6 +27,11 @@ const restaurantSchema = mongoose.Schema({
     plan: { type: String, required: true },
     isSetup: { type: Boolean, default: false },
     currency: { type: String },
+    receipt: {
+        useLogo: { type: Boolean },
+        header: { type: String },
+        footer: { type: String },
+    }
 })
 
 restaurantSchema.methods.generateAuthToken = function (data) {

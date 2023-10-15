@@ -101,7 +101,7 @@ if (cluster.isMaster) {
   })
   
   
-  const IP_ADDRESS = "192.168.100.254";
+  const IP_ADDRESS = process.env.LOCAL_IP_SERVER;
   const PORT = process.env.PORT || 4444;
   
   app.listen(PORT, () => {

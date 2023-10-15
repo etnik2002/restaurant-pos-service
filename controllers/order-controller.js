@@ -247,7 +247,7 @@ module.exports = {
     
             try {
                 const response = await axios.post(
-                    `http://192.168.100.254:5069/WeatherForecast/print/${req.params.id}`,
+                    `${process.env.LOCAL_IP_NET}/WeatherForecast/print/${req.params.id}`,
                     productsToPrint,
                     { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
                 ).catch((err) => {
