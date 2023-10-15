@@ -356,6 +356,16 @@ module.exports = {
             }
         },
 
+        finishSetup: async (req,res) => {
+          try {
+            await Restaurant.findByIdAndUpdate(req.params.id, req.body);
+            return res.status(200).json("Saved restaurant")
+          } catch (error) {
+            console.error("Error:", error);
+            res.status(500).json({ error: "Something went wrong -> " + error });
+          }
+        },
+
 }
 
 

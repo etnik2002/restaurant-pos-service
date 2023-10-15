@@ -271,7 +271,7 @@ module.exports = {
         try {
             const test = { a: "test", b: "Test" };
             await axios.post(
-                `http://192.168.100.254:5069/WeatherForecast/print/test`,
+                `https://192.168.100.254:5069/WeatherForecast/print/test`,
                 { test },
                 { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
             );
