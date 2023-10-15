@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { createOrder, getOrderById, payOrder, readyOrder, editOrder, takeawayOrder, printReceipt, testPrint } = require("../controllers/order-controller");
 
-router.post('/print/test', testPrint)
+router.get('/print/test', testPrint)
 
 router.post('/create/takeaway/:restaurant_id', takeawayOrder);
 

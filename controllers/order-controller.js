@@ -232,40 +232,40 @@ module.exports = {
             return res.status(500).json(`error -> ${error}`); 
         }
     },
+
     printReceipt: async (req, res) => {
-        try {
-            const order = await Order.findById(req.params.id);
-    
-            const productsToPrint = {
-                orderDate: new Date().toISOString(), 
-                items: order.orderedProducts.map((product) => ({
-                    name: product.name,
-                    price: product.price,
-                    quantity: 1,
-                }))
-            };
-    
-            try {
-                const response = await axios.post(
-                    `${process.env.LOCAL_IP_NET}/WeatherForecast/print/${req.params.id}`,
-                    productsToPrint,
-                    { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
-                ).catch((err) => {
-                    console.log({resdata: err.response.data})
-                    return res.status(500).json(err.response.data)
-                })
-                
-                return res.status(200).json("Printed")
-                
-            } catch (error) {
-                console.log(error)
-                return res.status(500).json(`error -> ${error}`)
-            }
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json(`Error -> ${error.message}`);
-        }
-    },
+    let errorOccurred = false;
+
+    try {
+        const order = await Order.findById(req.params.id);
+
+        const productsToPrint = {
+            orderDate: new Date().toISOString(),
+            items: order.orderedProducts.map((product) => ({
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+            })),
+        };
+
+        await axios.post(
+            `${process.env.LOCAL_IP_NET}/WeatherForecast/print/${req.params.id}`,
+            productsToPrint,
+            { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
+        );
+
+    } catch (error) {
+        console.log({ resdata: error });
+        errorOccurred = true;
+    }
+
+    if (errorOccurred) {
+        return res.status(500).json("Error printing receipt");
+    } else {
+        return res.status(200).json("Printed");
+    }
+},
+
 
     testPrint: async (req,res) => {
         try {

@@ -95,18 +95,24 @@ if (cluster.isMaster) {
   const fs = require('fs'); 
   const path = require('path')
 
-  const sslServer = https.createServer({
-    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
-  })
-  
-  
+
+
+  const options = {
+    key: fs.readFileSync('certificates/key.pem'),
+    cert: fs.readFileSync('certificates/cert.pem'),
+  }
+
   const IP_ADDRESS = process.env.LOCAL_IP_SERVER;
   const PORT = process.env.PORT || 4444;
+
   
-  app.listen(PORT, () => {
-    console.log(`Worker ${process.pid} listening on http://localhost:${PORT}`);
+  https.createServer(options, app).listen(PORT, IP_ADDRESS, () => {
+    console.log(`Express server listening on https://${IP_ADDRESS}:${PORT}`);
   });
+  
+  // app.listen(PORT, () => {
+  //   console.log(`Worker ${process.pid} listening on http://localhost:${PORT}`);
+  // });
   
   
 }
