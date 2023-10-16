@@ -19,7 +19,7 @@ if (cluster.isMaster) {
   const mongoose = require("mongoose");
   const cors = require("cors");
   const bodyParser = require("body-parser");
-  const session = require('express-session');
+  const session = require('cookie-session');
   const MongoStore = require('connect-mongo');
   require("dotenv").config();
 
@@ -94,8 +94,6 @@ if (cluster.isMaster) {
   const https = require('https');
   const fs = require('fs'); 
   const path = require('path')
-
-
 
   const options = {
     key: fs.readFileSync('certificates/key.pem'),

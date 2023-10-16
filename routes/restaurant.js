@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { createRestaurant, login,finishSetup, getRestaurantById,registerPrinter, getAllRestaurants, getRestaurantProducts, getRestaurantCategories, getRestaurantFloor, getRestaurantOrders, mostOrderedDish, completeSetup, scannerLogin,getAllWaiters, getTodaysOrders, deletePrinter, help, updateReceipt } = require("../controllers/restaurant-controller");
+const { createRestaurant, login,finishSetup, getRestaurantById,registerPrinter, getAllRestaurants, getRestaurantProducts, getRestaurantCategories, getRestaurantFloor, getRestaurantOrders, mostOrderedDish, completeSetup, scannerLogin,getAllWaiters, getTodaysOrders, deletePrinter, help, updateReceipt, searchLocalIp } = require("../controllers/restaurant-controller");
 
 
 router.get('/floors/:restaurant_id', getRestaurantFloor);
@@ -13,6 +13,8 @@ router.post('/setup/:id', finishSetup)
 router.post('/create', createRestaurant);
 
 router.post('/receipt/update/:id', updateReceipt);
+
+router.post('/ip/:id', searchLocalIp)
 
 router.post('/help', help);
 

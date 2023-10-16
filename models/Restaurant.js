@@ -31,7 +31,8 @@ const restaurantSchema = mongoose.Schema({
         useLogo: { type: Boolean },
         header: { type: String },
         footer: { type: String },
-    }
+    },
+    ip: { type: String },
 })
 
 restaurantSchema.methods.generateAuthToken = function (data) {

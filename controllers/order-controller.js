@@ -6,6 +6,7 @@ const Ingredient = require("../models/Ingredient");
 const uuid = require('uuid');
 const axios = require("axios");
 const https = require('https');
+const Restaurant = require("../models/Restaurant");
 
 module.exports = {
 
@@ -16,7 +17,7 @@ module.exports = {
             let price = 0;
             let orderedProducts = [];
             let uniqueID = "";
-            
+
             cart.map((item) => {
                 uniqueID = uuid.v1();
                 console.log({uniqueID})
@@ -281,7 +282,9 @@ module.exports = {
             console.error(error);
             return res.status(500).json(`Error -> ${error.message}`);
         }
-    }
+    },
+
+
     
 
 }

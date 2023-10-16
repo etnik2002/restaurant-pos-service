@@ -12,12 +12,12 @@ module.exports = {
     createProduct: async (req,res) => {
         try {
             const result = await cloudinary.uploader.upload(req.file.path);
-
+            console.log(req.body.stock)
             const newProduct = new Product({
                 name: req.body.name,
                 price: req.body.price,
                 category: req.body.category,
-                stock: req.body.stock,
+                stock: req.body.stock || 0,
                 image: result.secure_url,
                 restaurant_id: req.params.restaurant_id,
                 ingredients: req.body.ingredients,

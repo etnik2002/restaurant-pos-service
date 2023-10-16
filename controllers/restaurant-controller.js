@@ -10,6 +10,7 @@ const moment = require("moment");
 const Waiter = require("../models/Waiter");
 // const OpenAIApi = require('openai');
 const ObjectId = mongoose.Types.ObjectId;
+const IP = require("ip");
 
 
 
@@ -116,6 +117,20 @@ module.exports = {
         }
     },
       
+    searchLocalIp: async (req,res) => {
+      try {
+          const ip = IP.address();
+          console.log(ip)
+          const restaurant = await Restaurant.findById(req.params.id);
+          restaurant.ip = ip;
+          await restaurant.save();
+          return res.status(200).json(ip);
+      } catch (error) {
+          console.error(error);
+          return res.status(500).json(`Error -> ${error.message}`);
+      }
+  },
+
       scannerLogin: async (req,res) => {
         try {
             const restaurant = await Restaurant.findById(req.params.id);
