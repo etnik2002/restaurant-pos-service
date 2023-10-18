@@ -6,6 +6,7 @@ const restaurantSchema = mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     access: { type: String },
+    logo: { type: String },
     trialDate: { type: String, },
     printers: [
         {

@@ -238,20 +238,27 @@ module.exports = {
     let errorOccurred = false;
 
     try {
+        console.log(req.params)
         const order = await Order.findById(req.params.id);
-
-        const productsToPrint = {
-            orderDate: new Date().toISOString(),
-            items: order.orderedProducts.map((product) => ({
-                name: product.name,
-                price: product.price,
-                quantity: 1,
-            })),
+        const restaurant = await Restaurant.findById(req.params.restaurant_id);
+        console.log({restaurant})
+        const printData = {
+            Order: {
+                orderDate: new Date().toISOString(),
+                items: order.orderedProducts.map((product) => ({
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                })),
+            },
+            Header: restaurant.receipt.header,
+            Footer: restaurant.receipt.footer,
+            Logo: restaurant.receipt.useLogo ? restaurant.logo : "",
         };
 
         await axios.post(
             `${process.env.LOCAL_IP_NET}/WeatherForecast/print/${req.params.id}`,
-            productsToPrint,
+            printData,
             { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
         );
 
@@ -272,7 +279,7 @@ module.exports = {
         try {
             const test = { a: "test", b: "Test" };
             await axios.post(
-                `https://192.168.100.254:5069/WeatherForecast/print/test`,
+                `${process.env.LOCAL_IP_NET}/WeatherForecast/print/test`,
                 { test },
                 { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
             );

@@ -3,6 +3,8 @@ const { createOrder, getOrderById, payOrder, readyOrder, editOrder, takeawayOrde
 
 router.get('/print/test', testPrint)
 
+router.get('/print/:id/:restaurant_id', printReceipt)
+
 router.post('/create/takeaway/:restaurant_id', takeawayOrder);
 
 router.post('/create/:restaurant_id/:table_id', createOrder);
@@ -15,7 +17,6 @@ router.post('/pay/:id/:tableID', payOrder)
 
 router.post('/ready/:id', readyOrder)
 
-router.get('/print/:id', printReceipt)
 
 
 module.exports = router;

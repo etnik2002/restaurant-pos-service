@@ -11,7 +11,7 @@ const Waiter = require("../models/Waiter");
 // const OpenAIApi = require('openai');
 const ObjectId = mongoose.Types.ObjectId;
 const IP = require("ip");
-
+// const OpenAIApi = require("openai")
 
 
 function compare( a, b ) {
@@ -291,7 +291,8 @@ module.exports = {
       
       updateReceipt: async (req,res) => {
         try {
-          const { useLogo, header, footer } = req.body;
+          const { useRestaurantLogo, header, footer } = req.body;
+          console.log(req.body)
           const restaurant = await Restaurant.findById(req.params.id);
           const updatedRestaurant = {
             name: restaurant.name,
@@ -305,7 +306,9 @@ module.exports = {
             isSetup: restaurant.isSetup,
             currency: restaurant.currency,
             receipt: {
-              useLogo, header, footer
+              useLogo: useRestaurantLogo,
+              header: header ? header : restaurant.receipt.header,
+              footer: footer ? footer : restaurant.receipt.footer
             },
           }
           
@@ -364,7 +367,7 @@ module.exports = {
               // const responseText = completion.choices[0].message.content;
               // console.log(responseText);
           
-              res.status(200).json("Currently under maintenance");
+              res.status(200).json("Under construction");
             } catch (error) {
               console.error("Error:", error);
               res.status(500).json({ error: "Something went wrong -> " + error });
