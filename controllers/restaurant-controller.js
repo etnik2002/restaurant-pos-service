@@ -49,7 +49,7 @@ module.exports = {
     login: async (req, res) => {
         try {
           const restaurant = await Restaurant.findOne({ email: req.body.email });
-      
+          console.log(restaurant)
           if (!restaurant) {
             return res.status(404).json("Restaurant not found");
           }

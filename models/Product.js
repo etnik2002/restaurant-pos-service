@@ -10,7 +10,7 @@ const productSchema = mongoose.Schema({
     stock: { type: Number },
     image: { type: String },
     ingredients: [],
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
 })
 
