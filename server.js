@@ -34,6 +34,7 @@ if (cluster.isMaster) {
   const waiterRoutes = require("./routes/waiter");
   const trialRoutes = require("./routes/trial");
   const ingredientRoutes = require("./routes/ingredient");
+  const IP = require("ip");
 
   var cookieParser = require('cookie-parser');
 
@@ -101,7 +102,7 @@ if (cluster.isMaster) {
     cert: fs.readFileSync('certificates/cert.pem'),
   }
 
-  const IP_ADDRESS = process.env.LOCAL_IP_SERVER;
+  const IP_ADDRESS = IP.address() || process.env.LOCAL_IP_SERVER;
   const PORT = process.env.PORT || 4444;
 
 
