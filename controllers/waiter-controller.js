@@ -33,6 +33,7 @@ module.exports = {
 
     login: async (req,res) => {
         try {
+            console.log("ghere")
             const waiter = await Waiter.findOne({ restaurant_id: req.params.restaurant_id, pin: req.body.pin });
             if(!waiter) {
                 return res.status(404).json("This waiter was not found!");
