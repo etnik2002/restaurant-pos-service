@@ -238,7 +238,6 @@ module.exports = {
     let errorOccurred = false;
 
     try {
-        console.log(req.params)
         const order = await Order.findById(req.params.id);
         const restaurant = await Restaurant.findById(req.params.restaurant_id);
         console.log({restaurant})
