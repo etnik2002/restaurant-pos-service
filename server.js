@@ -34,6 +34,7 @@ if (cluster.isMaster) {
   const waiterRoutes = require("./routes/waiter");
   const trialRoutes = require("./routes/trial");
   const ingredientRoutes = require("./routes/ingredient");
+  const IP = require("ip");
 
   var cookieParser = require('cookie-parser');
 
@@ -101,7 +102,7 @@ if (cluster.isMaster) {
     cert: fs.readFileSync('certificates/cert.pem'),
   }
 
-  const IP_ADDRESS = process.env.LOCAL_IP_SERVER;
+  const IP_ADDRESS = IP.address() || process.env.LOCAL_IP_SERVER;
   const PORT = process.env.PORT || 4444;
 
 
@@ -143,13 +144,13 @@ if (cluster.isMaster) {
   });
   
 
-  https.createServer(app).listen(PORT, () => {
-    console.log(`Express server listening on http://localhost:${PORT}`);
-  });
-  
-  // app.listen(PORT, () => {
-  //   console.log(`Worker ${process.pid} listening on http://localhost:${PORT}`);
+  // https.createServer(options, app).listen(PORT, IP_ADDRESS, () => {
+  //   console.log(`Express server listening on https://${IP_ADDRESS}:${PORT}`);
   // });
+  
+  app.listen(PORT, () => {
+    console.log(`Worker ${process.pid} listening on http://localhost:${PORT}`);
+  });
   
   
 }
