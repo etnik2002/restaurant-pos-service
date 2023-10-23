@@ -143,8 +143,8 @@ if (cluster.isMaster) {
   });
   
 
-  https.createServer(options, app).listen(PORT, IP_ADDRESS, () => {
-    console.log(`Express server listening on https://${IP_ADDRESS}:${PORT}`);
+  https.createServer(app).listen(PORT, () => {
+    console.log(`Express server listening on http://localhost:${PORT}`);
   });
   
   // app.listen(PORT, () => {
