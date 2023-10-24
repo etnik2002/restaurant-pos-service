@@ -94,6 +94,8 @@ module.exports = {
         }
       },
 
+
+
       deletePrinter: async (req, res) => {
         try {
             const restaurant = await Restaurant.findById(req.params.restaurant_id);
