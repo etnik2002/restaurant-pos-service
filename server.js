@@ -105,52 +105,14 @@ if (cluster.isMaster) {
   const IP_ADDRESS = IP.address() || process.env.LOCAL_IP_SERVER;
   const PORT = process.env.PORT || 4444;
 
-
-  app.get('/loyverse/:restaurant_id', (req, res) => {
-    const access_token = '88f019c976c14286bdf7a040795ac9e3';
-  
-    axios.get('https://api.loyverse.com/v1.0/items', {
-      headers: {
-        'Authorization': `Bearer ${access_token}`
-      }
-    })
-    .then(async response => {
-      try {
-        const products = response.data.items.map(item => {
-          return {
-            name: item.item_name,
-            price: item.variants[0].default_price,
-            category: null,
-            stock: item.stock || 0,
-            image: item.image_url || "",
-            restaurant_id: req.params.restaurant_id,
-            ingredients: item.ingredients || [],
-          };
-        });
-        console.log(products)
-        await Product.insertMany(products);
-    
-        res.json(response.data);
-      } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
-    });
-    
-  });
-  
-
-  https.createServer(options, app).listen(PORT, IP_ADDRESS, () => {
-    console.log(`Express server listening on https://${IP_ADDRESS}:${PORT}`);
-  });
-  
-  // app.listen(PORT, () => {
-  //   console.log(`Worker ${process.pid} listening on http://localhost:${PORT}`);
+  // https.createServer(options, app).listen(PORT, IP_ADDRESS, () => {
+  //   console.log(`Express server listening on https://${IP_ADDRESS}:${PORT}`);
   // });
+  
+  
+  app.listen(PORT, () => {
+    console.log(`Worker ${process.pid} listening on http://localhost:${PORT}`);
+  });
   
   
 }
