@@ -276,9 +276,12 @@ module.exports = {
 
     testPrint: async (req,res) => {
         try {
+            const IP = require("ip");
+            const IP_ADDRESS = IP.address()
+            console.log({IP_ADDRESS})
             const test = { a: "test", b: "Test" };
             await axios.post(
-                `${process.env.LOCAL_IP_NET}/WeatherForecast/print/test`,
+                `http://${IP_ADDRESS}:5069/WeatherForecast/print/test`,
                 { test },
                 { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
             );
