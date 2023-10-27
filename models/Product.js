@@ -13,6 +13,7 @@ const productSchema = mongoose.Schema({
     trackStock: { type: Boolean },
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     restaurant_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
+    printToBar: { type: Boolean },
 })
 
 
