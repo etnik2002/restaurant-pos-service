@@ -196,9 +196,6 @@ module.exports = {
       closeShift: async (req, res) => {
         try {
           const { restaurant_id } = req.params;
-          const {
-            closedFrom,
-          } = req.body;
       
           await Restaurant.findByIdAndUpdate(
             restaurant_id,
@@ -210,7 +207,7 @@ module.exports = {
             }
           );
       
-          return res.status(200).json({ message: 'Shift opened successfully.' });
+          return res.status(200).json({ message: 'Shift closed successfully.' });
         } catch (error) {
           console.error(error);
           return res.status(500).json({ error: 'Internal server error.' });
