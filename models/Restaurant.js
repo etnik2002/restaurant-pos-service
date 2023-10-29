@@ -37,6 +37,11 @@ const restaurantSchema = mongoose.Schema({
         footer: { type: String },
     },
     ip: { type: String },
+    isShiftOpen: { type: Boolean },
+    startingCash: { type: Number },
+    shiftOpenedFrom: { type: String },
+    shiftClosedFrom: { type: String },
+    shiftOpenedAt: { type: String },
 })
 
 restaurantSchema.methods.generateAuthToken = function (data) {

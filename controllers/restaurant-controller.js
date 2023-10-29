@@ -165,6 +165,59 @@ module.exports = {
         }
       },
 
+      openShift: async (req, res) => {
+        try {
+          const { restaurant_id } = req.params;
+          const {
+            startingCash,
+            openedFrom,
+            openedAt
+          } = req.body;
+      
+          await Restaurant.findByIdAndUpdate(
+            restaurant_id,
+            {
+              $set: {
+                isShiftOpen: true,
+                startingCash: startingCash,
+                shiftOpenedFrom: openedFrom,
+                shiftOpenedAt: openedAt
+              }
+            }
+          );
+      
+          return res.status(200).json({ message: 'Shift opened successfully.' });
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({ error: 'Internal server error.' });
+        }
+      },
+
+      closeShift: async (req, res) => {
+        try {
+          const { restaurant_id } = req.params;
+          const {
+            closedFrom,
+          } = req.body;
+      
+          await Restaurant.findByIdAndUpdate(
+            restaurant_id,
+            {
+              $set: {
+                isShiftOpen: false,
+                startingCash: 0,
+              }
+            }
+          );
+      
+          return res.status(200).json({ message: 'Shift opened successfully.' });
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({ error: 'Internal server error.' });
+        }
+      },
+      
+
     getAllRestaurants: async (req,res) => {
         try {
             console.log("here")
