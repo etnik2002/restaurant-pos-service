@@ -77,6 +77,22 @@ module.exports = {
         }
       },
 
+      refreshToken: async (req,res) => {
+        try {
+          const restaurant = await Restaurant.findById(req.params.id);
+          console.log(restaurant)
+          if (!restaurant) {
+            return res.status(404).json("Restaurant not found");
+          }
+      
+          const token = restaurant.generateAuthToken(restaurant);
+          res.status(200).json({ refresh_token: token, message: "refresh token" });
+        } catch (error) {
+          console.log(error);
+          return res.status(500).json(`Error -> ${error}`);
+        }
+      },
+
       registerPrinter: async (req,res) => {
         try {
           const { name, location, interface, connection } = req.body;
