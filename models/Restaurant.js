@@ -25,7 +25,7 @@ const restaurantSchema = mongoose.Schema({
         }
     ],
     isActive: { type: Boolean, },
-    plan: { type: String, required: true },
+    plan: { type: String },
     isSetup: { type: Boolean, default: false },
     currency: {
         label: { type: String },

@@ -10,7 +10,6 @@ router.post('/printer/delete/:restaurant_id/:printer_id', deletePrinter);
 
 router.post('/setup/:id', finishSetup)
 
-
 router.post('/create', createRestaurant);
 
 router.post('/receipt/update/:id', updateReceipt);

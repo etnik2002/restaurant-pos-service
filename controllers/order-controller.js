@@ -12,6 +12,7 @@ module.exports = {
 
     createOrder: async (req,res) => {
         try {
+            console.log({etnik: req.body.waiter})
             const cart = req.body.cart;
             let products = [];
             let price = 0;
@@ -20,7 +21,6 @@ module.exports = {
 
             cart.map((item) => {
                 uniqueID = uuid.v1();
-                console.log({uniqueID})
                 orderedProducts.push({...item , note:item.note, uuid: uniqueID})
                 products.push(item._id);
                 price += item.price;
