@@ -340,7 +340,8 @@ module.exports = {
           
           const orders = await Order.find({
             restaurant_id: req.params.restaurant_id,
-            date: { $gte: currentDate, $lte: currentDate } 
+            date: { $gte: currentDate, $lte: currentDate },
+              isPaid: false
           })            
           .populate('waiter products restaurant_id')
           .populate({
