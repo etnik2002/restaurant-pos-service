@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const { createRestaurant, login,finishSetup, getRestaurantById,registerPrinter,changeCurrency, getAllRestaurants, getRestaurantProducts, getRestaurantCategories, getRestaurantFloor, getRestaurantOrders, mostOrderedDish, completeSetup, scannerLogin,getAllWaiters, getTodaysOrders, deletePrinter, help, updateReceipt, searchLocalIp, closeShift, openShift, refreshToken } = require("../controllers/restaurant-controller");
+const apicache = require("apicache");
+const cache = apicache.middleware;
 
-
-router.get('/floors/:restaurant_id', getRestaurantFloor);
+router.get('/floors/:restaurant_id',cache('10 minutes'), getRestaurantFloor);
 
 router.post('/printer/connect/:restaurant_id', registerPrinter);
 
@@ -32,13 +33,13 @@ router.post('/login/:id', scannerLogin);
 
 router.get('/all', getAllRestaurants)
 
-router.get('/:id', getRestaurantById);
+router.get('/:id',cache('2 minutes'), getRestaurantById);
 
 router.get('/orders/today/:restaurant_id', getTodaysOrders)
 
-router.get('/products/:restaurant_id', getRestaurantProducts);
+router.get('/products/:restaurant_id',cache('10 minutes'), getRestaurantProducts);
 
-router.get('/categories/:restaurant_id', getRestaurantCategories);
+router.get('/categories/:restaurant_id',cache('10 minutes'), getRestaurantCategories);
 
 router.get('/most-ordered/:restaurant_id', mostOrderedDish);
 
