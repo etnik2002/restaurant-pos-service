@@ -15,6 +15,8 @@ if (cluster.isMaster) {
   });
   
 } else {
+  require("dotenv").config();
+  const helmet = require("helmet");
   const express = require("express");
   const app = express();
   const mongoose = require("mongoose");
@@ -22,7 +24,6 @@ if (cluster.isMaster) {
   const bodyParser = require("body-parser");
   const session = require('cookie-session');
   const MongoStore = require('connect-mongo');
-  require("dotenv").config();
 
   const categoryRoutes = require("./routes/category");
   const floorRoutes = require("./routes/floor");
@@ -47,7 +48,8 @@ if (cluster.isMaster) {
   });
 
   app.use(bodyParser.urlencoded({ extended: true }));
-   
+  app.use(helmet()); 
+
   app.use(express.json());
   app.use(bodyParser.json());
   app.use(cors());
