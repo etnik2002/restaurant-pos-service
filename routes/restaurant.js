@@ -3,7 +3,7 @@ const { createRestaurant, login,finishSetup, getRestaurantById,registerPrinter,c
 const apicache = require("apicache");
 const cache = apicache.middleware;
 
-router.get('/floors/:restaurant_id', getRestaurantFloor);
+router.get('/floors/:restaurant_id',cache("10 minutes") , getRestaurantFloor);
 
 router.post('/printer/connect/:restaurant_id', registerPrinter);
 
