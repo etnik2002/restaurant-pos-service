@@ -37,9 +37,9 @@ router.get('/:id',cache('2 minutes'), getRestaurantById);
 
 router.get('/orders/today/:restaurant_id', getTodaysOrders)
 
-router.get('/products/:restaurant_id',cache('10 minutes'), getRestaurantProducts);
+router.get('/products/:restaurant_id',cache('8 hours'), getRestaurantProducts);
 
-router.get('/categories/:restaurant_id',cache('10 minutes'), getRestaurantCategories);
+router.get('/categories/:restaurant_id',cache('8 hours'), getRestaurantCategories);
 
 router.get('/most-ordered/:restaurant_id', mostOrderedDish);
 
